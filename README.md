@@ -9,4 +9,4 @@ This is a demo of several things:
 1. using the (Microsoft's [Azure](https://azure.microsoft.com/en-us/)) "serverless" backend with [overhide's](https://overhide.io) [remuneration APIs](https://azure.microsoft.com/en-us/)
     * no need to write own backend code
     * multi-currency support: fiat and crypto
-1. 
+
