@@ -1,4 +1,5 @@
-"use strict";
+import React from "react";
+import Payment from "./Payment";
 
 class App extends React.Component {
 
@@ -66,3 +67,5 @@ class App extends React.Component {
     );
   }
 }
+
+export default App;
