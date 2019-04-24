@@ -34,11 +34,11 @@ class App extends React.Component {
     // report errors
     if (this.state.error) {
       var error = (
-        <div class="ui icon red message">
-          <i class="exclamation circle icon"></i>
-          <i aria-hidden="true" class="close icon" style={{marginRight: "20px"}} onClick={(event) => this.setState({ error: null })}></i>
-          <div class="content">
-            <div class="header">
+        <div className="ui icon red message">
+          <i className="exclamation circle icon"></i>
+          <i aria-hidden="true" className="close icon" style={{marginRight: "20px"}} onClick={(event) => this.setState({ error: null })}></i>
+          <div className="content">
+            <div className="header">
               <h5>{this.state.error}</h5>
             </div>
           </div>
@@ -48,10 +48,10 @@ class App extends React.Component {
     // main UI
     return (
       <div>
-        <div class="ui middle aligned center aligned grid" style={{marginTop:"20px"}}>
+        <div className="ui middle aligned center aligned grid" style={{marginTop:"20px"}}>
           {/* dimmer for whole page */}
-          <div class={`ui ${this.state.loading ? "active" : ""} dimmer`}>
-            <div class="ui loader"></div>
+          <div className={`ui ${this.state.loading ? "active" : ""} dimmer`}>
+            <div className="ui loader"></div>
           </div>
           {/* error banner for whole page */}
           {error}

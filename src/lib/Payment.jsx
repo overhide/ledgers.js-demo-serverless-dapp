@@ -1,4 +1,5 @@
 import React from "react";
+import oh$ from "ledgers.js";
 
 class Payment extends React.Component {
 
@@ -6,7 +7,7 @@ class Payment extends React.Component {
     super(props);
 
     this.state = {
-      carAddress: null
+      carAddress: undefined
     };
   }
 
@@ -44,27 +45,27 @@ class Payment extends React.Component {
   render() {
     return (
       <div>
-        <div class="column">
-          <div class="row">
-            <h2 class="ui teal header">
-                <div class="content">
+        <div className="column">
+          <div className="row">
+            <h2 className="ui teal header">
+              <div className="content">
                     <i>ebc-forms-reactjs</i> demo
                 </div>
             </h2>
           </div>
-          <div class="row">
-            <div class="ui labeled input">
-              <div class="ui label">
+          <div className="row">
+            <div className="ui labeled input">
+              <div className="ui label">
                 Car Address
               </div>
               <input type='text' value={this.state.carAddress} onChange={(event) => this.setState({ carAddress: event.target.value })}></input>              
             </div>
-            <button class="ui primary button" style={{ marginLeft: "20px" }} onClick={this.generateNewCar}>
+            <button className="ui primary button" style={{ marginLeft: "20px" }} onClick={this.generateNewCar}>
               generate new car
             </button>
           </div>
         </div>
-        <div class="row">
+        <div className="row">
         </div>
       </div>
     );
