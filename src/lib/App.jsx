@@ -77,14 +77,10 @@ class App extends React.Component {
           {/* payment component */}
           <div className="two column row">
             <CarPanel
-              postUrl={this.props.postUrl}
-              getUrl={this.props.getUrl}
               setError={this.setError}
               setLoading={this.setLoading}
               doHint={this.doHint} />
             <TollPanel
-              postUrl={this.props.postUrl}
-              getUrl={this.props.getUrl}
               setError={this.setError}
               setLoading={this.setLoading}
               doHint={this.doHint} />
