@@ -1,10 +1,28 @@
 /**
  * Utilities to help with all the other components
  */
-
 import {Accounts} from 'web3-eth-accounts';
 
+/** initialization **/
+
 let accounts = new Accounts('http://localhost:8545');
+
+let admin = {}; // admin from Azure
+
+/**
+ * @param {} newAdmin - from Azure
+ */
+export function setAdmin(newAdmin) {
+  admin = newAdmin;
+  console.log('new admin :: ' + JSON.stringify(admin, null, 2));
+}
+
+/**
+ * @returns {} admin from Azure
+ */
+export function getAdmin() {
+  return admin;
+}
 
 /**
  * Creates a new Ethereum account

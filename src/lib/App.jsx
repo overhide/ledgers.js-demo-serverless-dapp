@@ -1,7 +1,9 @@
+import config from "../config.json";
+import {setAdmin} from "./utils";
+
 import React from "react";
 import CarPanel from "./CarPanel";
 import TollPanel from "./TollPanel";
-import config from "../config.json";
 
 class App extends React.Component {
 
@@ -10,9 +12,23 @@ class App extends React.Component {
 
     this.state = {
       error: null,
-      loading: false,
+      loading: true, // as fetching admin first
       hint: null
     };
+
+    this.fetchAdmin();
+  }
+
+  // fetch admin from Azure
+  fetchAdmin = () => {
+    fetch(config.adminData__AzureURL.replace('{formId}', config.admin__FormId), {
+      method: "GET",
+      headers: { "Content-Type": "application/json; charset=utf-8" }
+    })
+      .then(result => result.json())
+      .then(result => {setAdmin(result); this.setState({loading: false}) })
+      .catch(error => this.setState({ error: error, loading: false }));
+    return false;
   }
 
   // Is there an error?

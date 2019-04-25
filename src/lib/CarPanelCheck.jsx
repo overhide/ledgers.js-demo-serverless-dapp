@@ -20,11 +20,11 @@ class CarPanelCheck extends React.Component {
   checkTimeRemaining = () => {
     this.props.setLoading(true);
     var signature = makePretendChallengeAndSign(this.props.privateKey);
-    fetch(config.getTimeRemainingAzureLogicAppURL, { 
+    fetch(config.getTimeRemaining__AzureURL, { 
       method: "POST", 
       headers: { "Content-Type": "application/json; charset=utf-8" }, 
       body: JSON.stringify({ 
-        formId: config.microsoftFormsConfigFormId,
+        formId: config.admin__FormId,
         challengeHash: signature.messageHash,
         r: signature.r,
         s: signature.s,

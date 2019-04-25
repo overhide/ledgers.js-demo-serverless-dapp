@@ -117,12 +117,13 @@ react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _CarPanel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var _TollPanel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
-/* harmony import */ var _config_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(512);
-var _config_json__WEBPACK_IMPORTED_MODULE_3___namespace = /*#__PURE__*/__webpack_require__.t(512, 1);
+/* harmony import */ var _config_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(512);
+var _config_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(512, 1);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _CarPanel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
+/* harmony import */ var _TollPanel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -148,6 +149,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var App =
 /*#__PURE__*/
 function (_React$Component) {
@@ -159,6 +161,29 @@ function (_React$Component) {
     _classCallCheck(this, App);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_this), "fetchAdmin", function () {
+      fetch(_config_json__WEBPACK_IMPORTED_MODULE_0__.adminData__AzureURL.replace('{formId}', _config_json__WEBPACK_IMPORTED_MODULE_0__.admin__FormId), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      }).then(function (result) {
+        return result.json();
+      }).then(function (result) {
+        Object(_utils__WEBPACK_IMPORTED_MODULE_1__["setAdmin"])(result);
+
+        _this.setState({
+          loading: false
+        });
+      })["catch"](function (error) {
+        return _this.setState({
+          error: error,
+          loading: false
+        });
+      });
+      return false;
+    });
 
     _defineProperty(_assertThisInitialized(_this), "setError", function (value) {
       _this.setState({
@@ -174,19 +199,21 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "doHint", function (which) {
       _this.setState({
-        hint: _config_json__WEBPACK_IMPORTED_MODULE_3__.hints[which]
+        hint: _config_json__WEBPACK_IMPORTED_MODULE_0__.hints[which]
       });
     });
 
     _this.state = {
       error: null,
-      loading: false,
+      loading: true,
+      // as fetching admin first
       hint: null
     };
+
+    _this.fetchAdmin();
+
     return _this;
-  } // Is there an error?
-  //
-  // @param {string} value - error value or null
+  } // fetch admin from Azure
 
 
   _createClass(App, [{
@@ -196,11 +223,11 @@ function (_React$Component) {
 
       // report errors
       if (this.state.error) {
-        var error = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        var error = react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
           className: "ui icon red message"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("i", {
           className: "exclamation circle icon"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("i", {
           "aria-hidden": "true",
           className: "close icon",
           style: {
@@ -211,20 +238,20 @@ function (_React$Component) {
               error: null
             });
           }
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
           className: "content"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
           className: "header"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, this.state.error))));
+        }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("h5", null, this.state.error))));
       } // show hints
 
 
       if (this.state.hint) {
-        var hint = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        var hint = react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
           className: "ui icon blue message"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("i", {
           className: "info circle icon"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("i", {
           "aria-hidden": "true",
           className: "close icon",
           style: {
@@ -235,15 +262,15 @@ function (_React$Component) {
               hint: null
             });
           }
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
           className: "content"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
           className: "header"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, this.state.hint))));
+        }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("h5", null, this.state.hint))));
       } // main UI
 
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         className: "ui center aligned grid",
         style: {
           marginTop: "20px",
@@ -251,17 +278,17 @@ function (_React$Component) {
           marginRight: "auto",
           marginLeft: "auto"
         }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         className: "ui ".concat(this.state.loading ? "active" : "", " dimmer")
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         className: "ui loader"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         className: "two column row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CarPanel__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_CarPanel__WEBPACK_IMPORTED_MODULE_3__["default"], {
         setError: this.setError,
         setLoading: this.setLoading,
         doHint: this.doHint
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TollPanel__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_TollPanel__WEBPACK_IMPORTED_MODULE_4__["default"], {
         setError: this.setError,
         setLoading: this.setLoading,
         doHint: this.doHint
@@ -270,7 +297,7 @@ function (_React$Component) {
   }]);
 
   return App;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_2___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (App);
 
@@ -2570,6 +2597,8 @@ function (_React$Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAdmin", function() { return setAdmin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAdmin", function() { return getAdmin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNewAccount", function() { return getNewAccount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makePretendChallengeAndSign", function() { return makePretendChallengeAndSign; });
 /* harmony import */ var web3_eth_accounts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
@@ -2578,7 +2607,26 @@ __webpack_require__.r(__webpack_exports__);
  * Utilities to help with all the other components
  */
 
+/** initialization **/
+
 var accounts = new web3_eth_accounts__WEBPACK_IMPORTED_MODULE_0__["Accounts"]('http://localhost:8545');
+var admin = {}; // admin from Azure
+
+/**
+ * @param {} newAdmin - from Azure
+ */
+
+function setAdmin(newAdmin) {
+  admin = newAdmin;
+  console.log('new admin :: ' + JSON.stringify(admin, null, 2));
+}
+/**
+ * @returns {} admin from Azure
+ */
+
+function getAdmin() {
+  return admin;
+}
 /**
  * Creates a new Ethereum account
  * 
@@ -61322,7 +61370,7 @@ module.exports = v4;
 /* 512 */
 /***/ (function(module) {
 
-module.exports = {"microsoftFormsConfigFormId":"3","getTimeRemainingAzureLogicAppURL":"https://prod-38.eastus.logic.azure.com:443/workflows/834975ece9c44aec97018ec17367c2f1/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2470MxS6NCjogWU1eir9TMFQpPzfa-yFq04DpFAJgFk","hints":{"carApp":"car generated!","tollApp":"welcome toll app","foo":"bar"}};
+module.exports = {"admin__FormId":"3","adminData__AzureURL":"https://prod-13.eastus.logic.azure.com/workflows/f4db8bb331054244bf4a5d20fd961024/triggers/manual/paths/invoke/formId/{formId}?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8vm4Cr1pi1VKH9KTdqIvZQ-TZBi7BPn7DBVVnedyQbg","getTimeRemaining__AzureURL":"https://prod-38.eastus.logic.azure.com:443/workflows/834975ece9c44aec97018ec17367c2f1/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2470MxS6NCjogWU1eir9TMFQpPzfa-yFq04DpFAJgFk","hints":{"carApp":"car generated!","tollApp":"welcome toll app","foo":"bar"}};
 
 /***/ }),
 /* 513 */
@@ -61375,13 +61423,13 @@ function (_React$Component) {
       _this.props.setLoading(true);
 
       var signature = Object(_utils__WEBPACK_IMPORTED_MODULE_1__["makePretendChallengeAndSign"])(_this.props.privateKey);
-      fetch(_config_json__WEBPACK_IMPORTED_MODULE_0__.getTimeRemainingAzureLogicAppURL, {
+      fetch(_config_json__WEBPACK_IMPORTED_MODULE_0__.getTimeRemaining__AzureURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify({
-          formId: _config_json__WEBPACK_IMPORTED_MODULE_0__.microsoftFormsConfigFormId,
+          formId: _config_json__WEBPACK_IMPORTED_MODULE_0__.admin__FormId,
           challengeHash: signature.messageHash,
           r: signature.r,
           s: signature.s,
