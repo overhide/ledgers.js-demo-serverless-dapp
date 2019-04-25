@@ -1,4 +1,6 @@
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+
 module.exports = {
   module: {
     rules: [
@@ -29,6 +31,7 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/index.html",
       filename: "./index.html"
-    })
+    }),
+    new HardSourceWebpackPlugin()
   ]
 };

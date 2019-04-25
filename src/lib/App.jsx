@@ -1,5 +1,7 @@
 import React from "react";
-import Payment from "./Payment";
+import CarPanel from "./CarPanel";
+import TollPanel from "./TollPanel";
+import config from "../config.json";
 
 class App extends React.Component {
 
@@ -8,7 +10,8 @@ class App extends React.Component {
 
     this.state = {
       error: null,
-      loading: false
+      loading: false,
+      hint: null
     };
   }
 
@@ -26,8 +29,11 @@ class App extends React.Component {
     this.setState({ loading: value });
   };
 
-  generateNewCar = () => {
-    console.log('generateNewCar :: app#generteNewCar');
+  // Take hint text from *config.json* and display as modal
+  //
+  // @param {string} which - hint key
+  doHint = (which) => {
+    this.setState({hint: config.hints[which]});
   }
 
   render() {
@@ -45,23 +51,45 @@ class App extends React.Component {
         </div>
       );
     }
+    // show hints
+    if (this.state.hint) {
+      var hint = (
+        <div className="ui icon blue message">
+          <i className="info circle icon"></i>
+          <i aria-hidden="true" className="close icon" style={{ marginRight: "20px" }} onClick={(event) => this.setState({ hint: null })}></i>
+          <div className="content">
+            <div className="header">
+              <h5>{this.state.hint}</h5>
+            </div>
+          </div>
+        </div>
+      );
+    }
     // main UI
     return (
       <div>
-        <div className="ui middle aligned center aligned grid" style={{marginTop:"20px"}}>
+        <div className="ui center aligned grid" style={{marginTop:"20px", maxWidth: "1100px", marginRight: "auto", marginLeft: "auto"}}>
           {/* dimmer for whole page */}
           <div className={`ui ${this.state.loading ? "active" : ""} dimmer`}>
             <div className="ui loader"></div>
           </div>
           {/* error banner for whole page */}
-          {error}
           {/* payment component */}
-          <Payment 
-            postUrl={this.props.postUrl} 
-            getUrl={this.props.getUrl} 
-            setError={this.setError}
-            setLoading={this.setLoading}
-            generateNewCar={this.generateNewCar}/>
+          <div className="two column row">
+            <CarPanel
+              postUrl={this.props.postUrl}
+              getUrl={this.props.getUrl}
+              setError={this.setError}
+              setLoading={this.setLoading}
+              doHint={this.doHint} />
+            <TollPanel
+              postUrl={this.props.postUrl}
+              getUrl={this.props.getUrl}
+              setError={this.setError}
+              setLoading={this.setLoading}
+              doHint={this.doHint} />
+          </div>
+          {hint}
         </div>
       </div>
     );
