@@ -25,7 +25,7 @@ contract TollEnforce {
     mapping (address => uint) public carToZoneATimeoutUnixTime;        // map when zone A permit expires for cars
     mapping (address => uint) public carToZoneBTimeoutUnixTime;        // map when zone B permit expires for cars
     mapping (address => uint) public carToZoneCTimeoutUnixTime;        // map when zone C permit expires for cars
-    address[] public cars;                                             // list all cars tracked
+    address[] public currentCars;                                      // list all cars tracked
     
     event Topup(address indexed forCar, bytes32 byWhom, uint newZoneATimeout, uint newZoneBTimeout, uint newZoneCTimeout);
 
@@ -82,7 +82,7 @@ contract TollEnforce {
             && carToZoneBTimeoutUnixTime[forCar] == 0
             && carToZoneCTimeoutUnixTime[forCar] == 0) {
             // car not tracked yet
-            cars.push(forCar);
+            currentCars.push(forCar);
         }
         carToZoneATimeoutUnixTime[forCar] = newZoneTimeouts[0];
         carToZoneBTimeoutUnixTime[forCar] = newZoneTimeouts[1];
@@ -196,19 +196,29 @@ contract TollEnforce {
     // To be run periodically to purge cars
     function purgeCars() public isOwner {
         uint newLength = 0;
-        for (uint i = 0; i < cars.length; i++) {
-            if (carToZoneATimeoutUnixTime[cars[i]] > now 
-                || carToZoneBTimeoutUnixTime[cars[i]] > now 
-                || carToZoneCTimeoutUnixTime[cars[i]] > now) {
-                cars[newLength] = cars[i];
+        for (uint i = 0; i < currentCars.length; i++) {
+            if (carToZoneATimeoutUnixTime[currentCars[i]] > now 
+                || carToZoneBTimeoutUnixTime[currentCars[i]] > now 
+                || carToZoneCTimeoutUnixTime[currentCars[i]] > now) {
+                currentCars[newLength] = currentCars[i];
                 newLength++;
             } else {
-                delete carToZoneATimeoutUnixTime[cars[i]];
-                delete carToZoneBTimeoutUnixTime[cars[i]];
-                delete carToZoneCTimeoutUnixTime[cars[i]];
+                delete carToZoneATimeoutUnixTime[currentCars[i]];
+                delete carToZoneBTimeoutUnixTime[currentCars[i]];
+                delete carToZoneCTimeoutUnixTime[currentCars[i]];
             }
         }
         // by now we removed all expired cars-zone allotments
-        cars.length = newLength;
+        currentCars.length = newLength;
+    }
+
+    // @returns number cars tracked: topped up since last purge
+    function getNumberCurrentCars() public view returns (uint) {
+      return currentCars.length;
+    }
+
+    // @returns number reports tracked: not resolved and not expired since last expiration run
+    function getNumberCurrentReports() public view returns (uint) {
+      return currentReports.length;
     }
 } 
