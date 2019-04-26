@@ -23,7 +23,7 @@ module.exports = async function (context, req) {
             body: buf,
             headers: {
                 'Content-Type': 'application/octet-stream'
-            },            
+            },
         };
     }
     else {
