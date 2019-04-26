@@ -31,36 +31,48 @@ class CarPanel extends React.Component {
 
   render() {
     return (
-      <div className="column eight wide" style={{paddingLeft: "40px"}}>
-        <div className="ui segment teal" style={{ background: "#ccffff"}}>
+      <div className="ui segment teal" style={{ background: "#ccffff" }}>
+        <div className="ui grid">
           <div className="row centered">
             <h2 className="ui header">
               <div className="content">
                   <i>Car Top-Up App</i>
               </div>
-              <a onClick={() => this.props.doHint('carApp')} style={{cursor: "pointer", marginLeft: "20px", marginRight: "20px"}}><i className="info circle icon"></i></a>
+              <a onClick={() => this.props.doHint('carApp')} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
             </h2>
           </div>
           <div className="row centered">
-            <div className="ui labeled input fluid">
-              <div className="ui label">
-                Car Address
+            <div className="column sixteen wide">
+              <div className="ui labeled input fluid">
+                <div className="ui label">
+                  Car Address
+                </div>
+                <input type='text' value={this.state.carAddress} disabled></input>              
               </div>
-              <input type='text' value={this.state.carAddress} disabled></input>              
+            </div>              
+          </div>
+          <div className="row centered">
+            <div className="column sixteen wide">
+              <div className="ui segment" style={{ background: "#ccffff" }}>
+                <CarPanelCheck 
+                  carAddress={this.state.carAddress}
+                  privateKey={this.state.privateKey}
+                  setError={this.props.setError}
+                  setLoading={this.props.setLoading}
+                  doHint={this.props.doHint} />
+              </div>
             </div>
           </div>
-          <hr/>
-          <CarPanelCheck 
-            carAddress={this.state.carAddress}
-            privateKey={this.state.privateKey}
-            setError={this.props.setError}
-            setLoading={this.props.setLoading}
-            doHint={this.props.doHint} />
-          <hr/>
-          <CarPanelTopUp
-            setError={this.props.setError}
-            setLoading={this.props.setLoading}
-            doHint={this.props.doHint} />
+          <div className="row centered">
+            <div className="column sixteen wide">
+              <div className="ui segment" style={{ background: "#ccffff" }}>
+                <CarPanelTopUp
+                  setError={this.props.setError}
+                  setLoading={this.props.setLoading}
+                  doHint={this.props.doHint} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

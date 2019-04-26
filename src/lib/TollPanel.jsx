@@ -15,23 +15,27 @@ class TollPanel extends React.Component {
 
   render() {
     return (
-      <div className="column eight wide" style={{paddingRight: "40px"}}>
-        <div className="ui segment tertiary green" style={{ background: "#ccffcc"}}>
+      <div className="ui segment tertiary green" style={{ background: "#ccffcc" }}>
+        <div className="ui grid">
           <div className="row centered">
-            <h2 className="ui header">
-              <div className="content">
-                <i>Toll Bounty App</i>
-              </div>
-              <a onClick={() => this.props.doHint('tollApp')} style={{cursor: "pointer", marginLeft: "20px", marginRight: "20px"}}><i className="info circle icon"></i></a>
-            </h2>
+            <div className="twelve wide column">
+              <h2 className="ui header">
+                <div className="content">
+                  <i>Toll Bounty App</i>
+                </div>
+                <a onClick={() => this.props.doHint('tollApp')} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
+              </h2>
+            </div>
           </div>
           <div className="row centered">
-            <div className="ui labeled icon input fluid">
-              <div className="ui label">
-                ...
+            <div className="twelve wide column">
+              <div className="ui labeled icon input" style={{width: "80%"}}>
+                <div className="ui label">
+                  ...
+                </div>
+                <input type='text' value={this.state.carAddress} disabled></input>                
               </div>
-              <input type='text' value={this.state.carAddress} disabled></input>
-              <button className="ui icon blue button" onClick={() => this.props.doHint('foo')} style={{ cursor: "pointer" }}><i className="info white icon"></i></button>
+              <a onClick={() => this.props.doHint('foo')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>              
             </div>
           </div>
         </div>

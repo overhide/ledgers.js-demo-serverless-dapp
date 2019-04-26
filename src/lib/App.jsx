@@ -1,5 +1,5 @@
 import config from "../config.json";
-import {setAdmin} from "./utils";
+import {getAdmin} from "./utils";
 
 import React from "react";
 import CarPanel from "./CarPanel";
@@ -20,21 +20,21 @@ class App extends React.Component {
   }
 
   // fetch admin from Azure
-  fetchAdmin = () => {
-    fetch(config.adminData__AzureURL.replace('{formId}', config.admin__FormId), {
-      method: "GET",
-      headers: { "Content-Type": "application/json; charset=utf-8" }
-    })
-      .then(result => result.json())
-      .then(result => {setAdmin(result); this.setState({loading: false}) })
-      .catch(error => this.setState({ error: error, loading: false }));
-    return false;
+  fetchAdmin = async () => {
+    try {
+      await getAdmin()
+      this.setState({ loading: false })
+    }
+    catch(error) {
+      this.setState({ error: error, loading: false });
+    } 
   }
 
   // Is there an error?
   //
   // @param {string} value - error value or null
   setError = (value) => {
+    console.log('setError() :: ' + value);
     this.setState({ error: value });
   };
 
@@ -84,24 +84,34 @@ class App extends React.Component {
     // main UI
     return (
       <div>
-        <div className="ui center aligned grid" style={{marginTop:"20px", maxWidth: "1100px", marginRight: "auto", marginLeft: "auto"}}>
+        <div className="ui center aligned grid" style={{marginTop:"20px", maxWidth: "1700px", marginRight: "auto", marginLeft: "auto"}}>
           {/* dimmer for whole page */}
           <div className={`ui ${this.state.loading ? "active" : ""} dimmer`}>
             <div className="ui loader"></div>
           </div>
           {/* error banner for whole page */}
-          {/* payment component */}
-          <div className="two column row">
-            <CarPanel
-              setError={this.setError}
-              setLoading={this.setLoading}
-              doHint={this.doHint} />
-            <TollPanel
-              setError={this.setError}
-              setLoading={this.setLoading}
-              doHint={this.doHint} />
-          </div>
+          {error}
+          {/* hint banner */}
           {hint}
+          {/* payment component */}
+          <div className="ui grid">
+            <div className="three column row">
+              <div className="column" style={{minWidth: "420px", maxWidth: "420px", marginBottom: "20px"}}>
+                <CarPanel
+                  setError={this.setError}
+                  setLoading={this.setLoading}
+                  doHint={this.doHint} />
+              </div>
+              <div className="column" style={{background: "grey", minWidth: "420px", minHeight: "420px", marginBottom: "20px"}}>
+              </div>
+              <div className="column" style={{minWidth: "420px", maxWidth: "420px"}}>
+                <TollPanel
+                  setError={this.setError}
+                  setLoading={this.setLoading}
+                  doHint={this.doHint} />
+              </div>
+            </div>
+          </div>            
         </div>
       </div>
     );

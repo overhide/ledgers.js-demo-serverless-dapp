@@ -2,23 +2,24 @@
  * Utilities to help with all the other components
  */
 import {Accounts} from 'web3-eth-accounts';
+import config from "../config.json";
 
 /** initialization **/
 
 let accounts = new Accounts('http://localhost:8545');
 
-let admin = {}; // admin from Azure
-
 /**
- * @param {} newAdmin - from Azure
+ * admin - from Azure (promise)
  */
-export function setAdmin(newAdmin) {
-  admin = newAdmin;
-  console.log('new admin :: ' + JSON.stringify(admin, null, 2));
-}
+let admin = fetch(config.adminData__AzureURL.replace('{formId}', config.admin__FormId), {
+  method: "GET",
+  headers: { "Content-Type": "application/json; charset=utf-8" }
+})
+.then(result => result.json())
+.then(result => {console.log('new admin :: ' + JSON.stringify(result, null, 2)); return result;});
 
 /**
- * @returns {} admin from Azure
+ * @returns {Promise} admin from Azure
  */
 export function getAdmin() {
   return admin;
