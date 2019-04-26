@@ -1,3 +1,4 @@
+const CopyPlugin = require('copy-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
@@ -32,6 +33,9 @@ module.exports = {
       template: "./src/index.html",
       filename: "./index.html"
     }),
-    new HardSourceWebpackPlugin()
+    new HardSourceWebpackPlugin(),
+    new CopyPlugin([
+      { from: 'src/assets', to: 'assets' }
+    ])
   ]
 };

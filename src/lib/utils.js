@@ -35,12 +35,19 @@ export function getNewAccount() {
 }
 
 /**
+ * @returns {string} a make pretend challenge
+ */
+export function makePretendChallenge() {
+  return new String(new Date() / 1000) // make pretend challenge
+}
+
+/**
  * @param {string} privateKey - to sign with
  * 
  * @returns {messageHash, r, s, v} of signed (make pretend) challenge
  */
 export function makePretendChallengeAndSign(privateKey) {
-  var challenge = new String(new Date() / 1000) // make pretend challenge
+  var challenge = makePretendChallenge();
   var { messageHash, r, s, v } = accounts.sign(challenge, privateKey);
   v = parseInt(v);
   return { messageHash, r, s, v };

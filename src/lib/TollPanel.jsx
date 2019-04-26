@@ -1,8 +1,5 @@
 import React from "react";
-import {Accounts} from 'web3-eth-accounts';
 import config from "../config.json";
-
-let accounts = new Accounts('http://localhost:8545');
 
 class TollPanel extends React.Component {
 
@@ -16,6 +13,8 @@ class TollPanel extends React.Component {
   render() {
     return (
       <div className="ui segment tertiary green" style={{ background: "#ccffcc" }}>
+        <img src="assets/spy.png" style={{ top: "-65px", left: "-65px", position: "absolute", zIndex: "5" }}></img>
+        <img src="assets/pin.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">
           <div className="row centered">
             <div className="twelve wide column">

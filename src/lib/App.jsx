@@ -4,6 +4,7 @@ import {getAdmin} from "./utils";
 import React from "react";
 import CarPanel from "./CarPanel";
 import TollPanel from "./TollPanel";
+import OfficerPanel from "./OfficerPanel";
 
 class App extends React.Component {
 
@@ -89,26 +90,40 @@ class App extends React.Component {
           <div className={`ui ${this.state.loading ? "active" : ""} dimmer`}>
             <div className="ui loader"></div>
           </div>
-          {/* error banner for whole page */}
-          {error}
-          {/* hint banner */}
-          {hint}
-          {/* payment component */}
+          <div style={{position: "absolute", top: "5px", left: "10%", width: "80%", zIndex: "10", opacity: "0.8"}}>
+            {/* error banner for whole page */}
+            {error}
+            {/* hint banner */}
+            {hint}
+            {/* payment component */}
+          </div>
           <div className="ui grid">
+            <div className="row" style={{height: "30px"}}>
+            </div>
             <div className="three column row">
-              <div className="column" style={{minWidth: "420px", maxWidth: "420px", marginBottom: "20px"}}>
-                <CarPanel
-                  setError={this.setError}
-                  setLoading={this.setLoading}
-                  doHint={this.doHint} />
+              <div className="column" style={{minWidth: "550px", maxWidth: "550px", marginBottom: "20px", marginTop: "65px"}}>
+                <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
+                  <CarPanel
+                    setError={this.setError}
+                    setLoading={this.setLoading}
+                    doHint={this.doHint} />
+                </div>
               </div>
-              <div className="column" style={{background: "grey", minWidth: "420px", minHeight: "420px", marginBottom: "20px"}}>
+              <div className="column" style={{minWidth: "420px", maxWidth: "420px", minHeight: "420px", marginBottom: "20px"}}>
               </div>
-              <div className="column" style={{minWidth: "420px", maxWidth: "420px"}}>
-                <TollPanel
-                  setError={this.setError}
-                  setLoading={this.setLoading}
-                  doHint={this.doHint} />
+              <div className="column" style={{ minWidth: "550px", maxWidth: "550px", marginTop: "65px"}}>
+                <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
+                  <TollPanel
+                    setError={this.setError}
+                    setLoading={this.setLoading}
+                    doHint={this.doHint} />
+                </div>
+                <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto", marginTop: "105px" }}>
+                  <OfficerPanel
+                    setError={this.setError}
+                    setLoading={this.setLoading}
+                    doHint={this.doHint} />
+                </div>
               </div>
             </div>
           </div>            

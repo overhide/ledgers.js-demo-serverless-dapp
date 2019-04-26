@@ -32,6 +32,8 @@ class CarPanel extends React.Component {
   render() {
     return (
       <div className="ui segment teal" style={{ background: "#ccffff" }}>
+        <img src="assets/steering.png" style={{top:"-65px", left:"-65px",position:"absolute",zIndex:"5"}}></img>
+        <img src="assets/wheel.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">
           <div className="row centered">
             <h2 className="ui header">
@@ -67,6 +69,8 @@ class CarPanel extends React.Component {
             <div className="column sixteen wide">
               <div className="ui segment" style={{ background: "#ccffff" }}>
                 <CarPanelTopUp
+                  carAddress={this.state.carAddress}
+                  privateKey={this.state.privateKey}
                   setError={this.props.setError}
                   setLoading={this.props.setLoading}
                   doHint={this.props.doHint} />
