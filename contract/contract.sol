@@ -1,31 +1,31 @@
-pragma solidity ^0.4.22;
+pragma solidity ^0.4.25;
 
 contract TollEnforce {
 
     address owner;
     
-    uint rewardValue;                                           // current reward in Wei when perpetrator nabbed by enforcer, paid out on GoodReport
-    uint minStakeValue;                                         // current bounty hunter stake in Wei for reporting perpetrator, returned on GoodReport or ExpiredReport
-    uint bountyTimePeriodSeconds;                               // how many seconds--since report--a bounty is active for
+    uint public rewardValue;                                           // current reward in Wei when perpetrator nabbed by enforcer, paid out on GoodReport
+    uint public minStakeValue;                                         // current bounty hunter stake in Wei for reporting perpetrator, returned on GoodReport or ExpiredReport
+    uint public bountyTimePeriodSeconds;                               // how many seconds--since report--a bounty is active for
     
-    struct Report {                                             // bounty report by hunter
-        bool isPending;                                         // is report still pending reconciliation?
-        address bountyHunter;                                   // address of hunter
-        uint bountyExpirationUnixTime;                          // Unix time seconds when bounty will timeout
-        uint carXCoordinate;                                    // X coordinate of car on map
-        uint carYCoordinate;                                    // Y coordinate of car on map
-        uint stakedValue;                                       // bounty hunter's stake in Wei, returned on GoodReport or ExpiredReport
-        uint rewardValue;                                       // bounty hunter's reward in Wei, paid out on GoodReport
+    struct Report {                                                    // bounty report by hunter
+        bool isPending;                                                // is report still pending reconciliation?
+        address payable bountyHunter;                                  // address of hunter
+        uint bountyExpirationUnixTime;                                 // Unix time seconds when bounty will timeout
+        uint carXCoordinate;                                           // X coordinate of car on map
+        uint carYCoordinate;                                           // Y coordinate of car on map
+        uint stakedValue;                                              // bounty hunter's stake in Wei, returned on GoodReport or ExpiredReport
+        uint rewardValue;                                              // bounty hunter's reward in Wei, paid out on GoodReport
     }
     
-    mapping (address => Report) reports;                        // all current reports: car address to report
-    address[] currentReports;                                   // addresses of all reports since last expiration run
+    mapping (address => Report) public reports;                        // all current reports: car address to report
+    address[] public currentReports;                                   // addresses of all reports since last expiration run
     
-    mapping (bytes32 => uint) payeeHashToLastPaymentUnixTime;   // sha256 of payee `<address>@<imparterTag>` to last payment considered
-    mapping (address => uint) carToZoneATimeoutUnixTime;        // map when zone A permit expires for cars
-    mapping (address => uint) carToZoneBTimeoutUnixTime;        // map when zone B permit expires for cars
-    mapping (address => uint) carToZoneCTimeoutUnixTime;        // map when zone C permit expires for cars
-    address[] cars;                                             // list all cars tracked
+    mapping (bytes32 => uint) public payeeHashToLastPaymentUnixTime;   // sha256 of payee `<address>@<imparterTag>` to last payment considered
+    mapping (address => uint) public carToZoneATimeoutUnixTime;        // map when zone A permit expires for cars
+    mapping (address => uint) public carToZoneBTimeoutUnixTime;        // map when zone B permit expires for cars
+    mapping (address => uint) public carToZoneCTimeoutUnixTime;        // map when zone C permit expires for cars
+    address[] public cars;                                             // list all cars tracked
     
     event Topup(address indexed forCar, bytes32 byWhom, uint newZoneATimeout, uint newZoneBTimeout, uint newZoneCTimeout);
 
@@ -82,7 +82,7 @@ contract TollEnforce {
             && carToZoneBTimeoutUnixTime[forCar] == 0
             && carToZoneCTimeoutUnixTime[forCar] == 0) {
             // car not tracked yet
-            cars[cars.length] = forCar;
+            cars.push(forCar);
         }
         carToZoneATimeoutUnixTime[forCar] = newZoneTimeouts[0];
         carToZoneBTimeoutUnixTime[forCar] = newZoneTimeouts[1];
@@ -99,7 +99,7 @@ contract TollEnforce {
     // @param forCar - which car to check
     // @returns Unix time seconds when zone A permit expires forCar
     function getZoneBTimeout(address forCar) public view returns (uint) {
-        return carToZoneATimeoutUnixTime[forCar];
+        return carToZoneBTimeoutUnixTime[forCar];
     }
 
     // @param forCar - which car to check
@@ -146,6 +146,7 @@ contract TollEnforce {
         if (zoneIndex == 1) require(carToZoneBTimeoutUnixTime[carAddress] < now);
         if (zoneIndex == 2) require(carToZoneCTimeoutUnixTime[carAddress] < now);
         reports[carAddress] = Report(true, msg.sender, now + bountyTimePeriodSeconds, carXCoordinate, carYCoordinate, msg.value, rewardValue);
+        currentReports.push(carAddress);
         emit NewReport(carAddress, carXCoordinate, carYCoordinate, zoneIndex);
     }
 
@@ -171,8 +172,7 @@ contract TollEnforce {
     //
     // Cleans up reconciled and expired reports.
     function expireReports() public isOwner {
-        address[] memory _currentReports;
-        uint next = 0;
+        uint newLength = 0;
         for (uint i = 0; i < currentReports.length; i++) {
             // reconciled
             if (!reports[currentReports[i]].isPending) {
@@ -181,33 +181,34 @@ contract TollEnforce {
             // expired
             if (reports[currentReports[i]].bountyExpirationUnixTime < now) {
                 reports[currentReports[i]].bountyHunter.send(reports[currentReports[i]].stakedValue); // refund stake
+                delete reports[currentReports[i]];
                 emit ExpiredReport(currentReports[i]);
                 continue;
             }
             // still pending report
-            _currentReports[next] = currentReports[i];
-            next++;
+            currentReports[newLength] = currentReports[i];
+            newLength++;
         }
-        // remove all expired and reconciled reports
-        currentReports = _currentReports;
+        // by now we removed all expired and reconciled reports
+        currentReports.length = newLength;
     }
 
     // To be run periodically to purge cars
     function purgeCars() public isOwner {
-        address[] memory _cars;
-        uint next = 0;
+        uint newLength = 0;
         for (uint i = 0; i < cars.length; i++) {
             if (carToZoneATimeoutUnixTime[cars[i]] > now 
                 || carToZoneBTimeoutUnixTime[cars[i]] > now 
                 || carToZoneCTimeoutUnixTime[cars[i]] > now) {
-                _cars[next] = cars[i];
+                cars[newLength] = cars[i];
+                newLength++;
             } else {
                 delete carToZoneATimeoutUnixTime[cars[i]];
                 delete carToZoneBTimeoutUnixTime[cars[i]];
                 delete carToZoneCTimeoutUnixTime[cars[i]];
             }
         }
-        // remove all expired cars-zone allotments
-        cars = _cars;
+        // by now we removed all expired cars-zone allotments
+        cars.length = newLength;
     }
 } 
