@@ -12,27 +12,25 @@ class TollPanel extends React.Component {
 
   render() {
     return (
-      <div className="ui segment tertiary green" style={{ background: "#ccffcc" }}>
+      <div className="ui segment black" style={{ background: "#f2f2f2" }}>
         <img src="assets/spy.png" style={{ top: "-65px", left: "-65px", position: "absolute", zIndex: "5" }}></img>
         <img src="assets/pin.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">
           <div className="row centered">
-            <div className="twelve wide column">
-              <h2 className="ui header">
-                <div className="content">
-                  <i>Toll Bounty App</i>
-                </div>
-                <a onClick={() => this.props.doHint('tollApp')} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
-              </h2>
-            </div>
+            <h2 className="ui header">
+              <div className="content">
+                <i>Toll Bounty App</i>
+              </div>
+              <a onClick={() => this.props.doHint('tollApp')} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
+            </h2>
           </div>
           <div className="row centered">
             <div className="twelve wide column">
               <div className="ui labeled icon input" style={{width: "80%"}}>
-                <div className="ui label">
+                <div className="ui black label">
                   ...
                 </div>
-                <input type='text' value={this.state.carAddress} disabled></input>                
+                <input type='text' value={this.state.carAddress} readOnly></input>                
               </div>
               <a onClick={() => this.props.doHint('foo')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>              
             </div>
