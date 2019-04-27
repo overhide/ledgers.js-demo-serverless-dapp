@@ -5,6 +5,7 @@ import React from "react";
 import CarPanel from "./CarPanel";
 import TollPanel from "./TollPanel";
 import OfficerPanel from "./OfficerPanel";
+import MapPanel from "./MapPanel";
 
 class App extends React.Component {
 
@@ -107,7 +108,10 @@ class App extends React.Component {
                     doHint={this.doHint} />
                 </div>
               </div>
-              <div className="column" style={{minWidth: "420px", maxWidth: "420px", minHeight: "420px", marginBottom: "20px"}}>
+              <div className="column" style={{minWidth: "462px", maxWidth: "462px", minHeight: "528px", marginBottom: "20px", marginLeft: "10px", marginRight: "10px", padding: "0px"}}>
+                <MapPanel
+                  setError={this.setError}
+                  doHint={this.doHint} />
               </div>
               <div className="column" style={{ minWidth: "550px", maxWidth: "550px", marginTop: "65px"}}>
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
