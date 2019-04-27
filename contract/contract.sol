@@ -65,18 +65,44 @@ contract TollEnforce {
         bountyTimePeriodSeconds = _bountyTimePeriodSeconds;
     }
   
+    // @param source - 32 bytes
+    // @param offset - e.g. 0, 4, 8 into source
+    // @returns first 12 bytes split into 4 byte values
+    // thanks https://ethereum.stackexchange.com/a/13162
+    function split(bytes32 source, uint offset) private pure returns (bytes4 res) {
+        assembly {
+            let freemem_pointer := mload(0x40)
+            mstore(add(freemem_pointer,0x00), source)
+            res := mload(add(freemem_pointer,offset))
+        }
+    }
+    
+    // convert bytes to integer
+    // thanks: https://ethereum.stackexchange.com/a/51234
+    function bytesToUint(bytes4 b) private pure returns (uint256){
+        uint256 number;
+        for(uint i=0;i<b.length;i++){
+            number = number + uint(uint8(b[i])*(2**(8*(b.length-(i+1)))));
+        }
+        return number;
+    }      
+  
     // @param forCar - which car the topup is for
     // @param byWhom - who made the topup payment: sha256 hash with format `<address>@<imparterTag>` where imparterTag is as per ledgers.js
-    // @param newZoneTimeouts - Unix time seconds when zone permits expires forCar:  [zonaA, zoneB, zoneC]
+    // @param newZoneTimeoutsBytes - Unix time seconds when zone permits expire forCar:  32 byte hex string first 4 bytes: zonaA, next zoneB, next zoneC
     // @param carSig* - signature checking values, see 'validate' modifier
     function topup(address forCar, 
                    bytes32 byWhom, 
-                   uint[] memory newZoneTimeouts, 
+                   bytes32 newZoneTimeoutsBytes, 
                    bytes32 carSigHash,
                    uint8 carSigV,
                    bytes32 carSigR,
                    bytes32 carSigS) public isOwner validate(forCar, carSigHash, carSigV, carSigR, carSigS) {
-        require(newZoneTimeouts[0] > 0 || newZoneTimeouts[1] > 0 || newZoneTimeouts[2] > 0);
+        uint[] memory newZoneTimeouts = new uint[](3);
+        newZoneTimeouts[0] = bytesToUint(split(newZoneTimeoutsBytes, 0));
+        newZoneTimeouts[1] = bytesToUint(split(newZoneTimeoutsBytes, 4));
+        newZoneTimeouts[2] = bytesToUint(split(newZoneTimeoutsBytes, 8));
+        if (newZoneTimeouts[0] == 0 && newZoneTimeouts[1] == 0 && newZoneTimeouts[2] == 0) return;
         payeeHashToLastPaymentUnixTime[byWhom] = now;
         if (carToZoneATimeoutUnixTime[forCar] == 0
             && carToZoneBTimeoutUnixTime[forCar] == 0
