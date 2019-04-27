@@ -38,7 +38,7 @@ export function getNewAccount() {
  * @returns {string} a make pretend challenge
  */
 export function makePretendChallenge() {
-  return new String(new Date() / 1000) // make pretend challenge
+  return `please sign this challenge proving you own this address :: ${(new Date()).getTime() / 1000}`; // make pretend challenge
 }
 
 /**

@@ -1,5 +1,6 @@
 import oh$ from "ledgers.js";
-import {getAdmin, makePretendChallenge} from "./utils";
+import config from "../config.json";
+import {getAdmin, makePretendChallenge,makePretendChallengeAndSign} from "./utils";
 
 import React from "react";
 
@@ -24,7 +25,7 @@ class CarPanelTopUp extends React.Component {
         zoneB: '',
         zoneC: ''
       },
-      payeeAddress: {}
+      payerAddress: {}
     };
   }
 
@@ -73,12 +74,12 @@ class CarPanelTopUp extends React.Component {
     };
 
     /**
-     * Update current payee
+     * Update current payer
      */
     oh$.onCredentialsUpdate = async (imparterTag, creds) => {
-      let payeeAddress = {};
-      payeeAddress[imparterTag] = creds.address;
-      this.setState(payeeAddress);
+      let payerAddress = {};
+      payerAddress[imparterTag] = creds.address;
+      this.setState({payerAddress: {...payerAddress, ...this.state.payerAddress}});
     }
 
     oh$.setNetwork('ohledger', { currency: 'USD', mode: 'test' }); // dollars in test mode
@@ -119,6 +120,7 @@ class CarPanelTopUp extends React.Component {
    * Do the actual topup
    */
   topup = async (zone) => {
+    this.props.setLoading(true);
     switch (this.state.chosenCurrency) {
       case 'dollars':
         var amount = (await getAdmin())[`${zone}__dollars`];
@@ -139,11 +141,12 @@ class CarPanelTopUp extends React.Component {
     }
     var challenge = makePretendChallenge();    
     try {
-      await oh$.createTransaction(imparter, amount, to);
       var signature = await oh$.sign(imparter, challenge);
-      this.doTopup(imparter, this.state.payeeAddress[imparter], signature, challenge);
+      await oh$.createTransaction(imparter, amount, to);
+      this.doTopup(imparter, this.state.payerAddress[imparter], signature, challenge);
     } catch (error) {
       this.props.setError(new String(error));
+      this.props.setLoading(false);
     }
   }
 
@@ -151,14 +154,14 @@ class CarPanelTopUp extends React.Component {
    * Call backend to topup into smart-contract
    * 
    * @param {string} ledgerKey - which ledger to topup
-   * @param {string} payeeAddress - on the ledger to topup with
-   * @param {string} payeeSignature - to prove ownership of payeeAddress
+   * @param {string} payerAddress - on the ledger to topup with
+   * @param {string} payerSignature - to prove ownership of payerAddress
    * @param {string} signatureChallenge - signed
    */
-  doTopup = (ledgerKey, payeeAddress, payeeSignature, signatureChallenge) => {
+  doTopup = (ledgerKey, payerAddress, payerSignature, signatureChallenge) => {
     this.props.setLoading(true);
     var carSignature = makePretendChallengeAndSign(this.props.privateKey);
-    fetch(config.getTimeRemaining__AzureURL, {
+    fetch(config.topup__AzureURL, {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({
@@ -168,21 +171,27 @@ class CarPanelTopUp extends React.Component {
         },
         carAddress: this.props.carAddress,
         carSignature: {
-          r: signature.r,
-          s: signature.s,
-          v: signature.v,
-          challengeHash: signature.messageHash
+          r: carSignature.r,
+          s: carSignature.s,
+          v: carSignature.v,
+          challengeHash: carSignature.messageHash
         },
-        payeeLedgerKey: ledgerKey,
-        payeeAddress: payeeAddress,
-        payeeSignature: {
-          base64Signature: btoa(payeeSignature),
+        payerLedgerKey: ledgerKey,
+        payerAddress: payerAddress,
+        payerSignature: {
+          base64Signature: btoa(payerSignature),
           base64Challenge: btoa(signatureChallenge)
         }
       })
     })
-    .then(response => this.props.setLoading(false))
-    .catch(error => { this.props.setLoading(false); this.props.setError(error) });
+    .then(response => {
+      this.props.setLoading(false);
+      return this.props.setLoading(false)
+    })
+    .catch(error => { 
+      this.props.setLoading(false);
+      return this.props.setLoading(false); this.props.setError(error);
+    });
   }
 
   render() {
