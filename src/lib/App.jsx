@@ -15,7 +15,11 @@ class App extends React.Component {
     this.state = {
       error: null,
       loading: true, // as fetching admin first
-      hint: null
+      hint: null,
+      atCar: false,
+      carAddress: null,
+      hunterCoords: {x: null, y: null},
+      hunterZone: null
     };
 
     this.fetchAdmin();
@@ -51,6 +55,22 @@ class App extends React.Component {
       console.log('clearing hint');
       this.setState({ hint: null });
     }
+  }
+
+  setCarAddress = (address) => {
+    this.setState({carAddress: address});
+  };
+
+  setAtCar = (flag) => {
+    this.setState({atCar: flag});
+  }
+
+  setHunterCoords = (x, y) => {
+    this.setState({hunterCoords: {x: x, y: y}});
+  }
+
+  setHunterZone = (zone) => {
+    this.setState({hunterZone: zone});
   }
 
   render() {
@@ -105,19 +125,27 @@ class App extends React.Component {
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
                   <CarPanel
                     setError={this.setError}
-                    doHint={this.doHint} />
+                    doHint={this.doHint}
+                    carAddressSetterFn={this.setCarAddress} />
                 </div>
               </div>
               <div className="column" style={{minWidth: "462px", maxWidth: "462px", minHeight: "528px", marginBottom: "20px", marginLeft: "10px", marginRight: "10px", padding: "0px"}}>
                 <MapPanel
                   setError={this.setError}
-                  doHint={this.doHint} />
+                  doHint={this.doHint}
+                  atCarSetterFn={this.setAtCar}
+                  hunterCoordsSetterFn={this.setHunterCoords}
+                  hunterZoneSetterFn={this.setHunterZone} />
               </div>
               <div className="column" style={{ minWidth: "550px", maxWidth: "550px", marginTop: "65px"}}>
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
                   <TollPanel
                     setError={this.setError}
-                    doHint={this.doHint} />
+                    doHint={this.doHint}
+                    atCar={this.state.atCar}
+                    carAddress={this.state.carAddress}
+                    hunterCoords={this.state.hunterCoords}
+                    hunterZone={this.state.hunterZone} />
                 </div>
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto", marginTop: "105px" }}>
                   <OfficerPanel

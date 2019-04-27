@@ -7,10 +7,6 @@ import React from "react";
 const CENTS_IN_DOLLAR = 100;
 const WEI_IN_ETHER = 1000000000000000000;
 
-var doTest = () => {
-
-}
-
 class CarPanelTopUp extends React.Component {
 
   constructor(props) {
@@ -223,7 +219,7 @@ class CarPanelTopUp extends React.Component {
               <div className="or"></div>
               <button className={`ui primary ${this.state.ethersEnabled ? '' : 'disabled'} button`} onClick={() => this.chooseEthers()}>ethers</button>
             </div>
-            <a onClick={() => doTest()/*this.props.doHint('foo')*/} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>                          
+            <a onClick={() => this.props.doHint('carAppButtons')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>                          
           </div>
         </div>
         <div className="row centered twelve wide">

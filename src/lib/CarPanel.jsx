@@ -24,6 +24,7 @@ class CarPanel extends React.Component {
   // initialize state for car.
   generateCar = () => {
     var account = getNewAccount();
+    this.props.carAddressSetterFn(account.address);
     return {
       carAddress: account.address, // Car's Ethereum address
       privateKey: account.privateKey // Car's private key
@@ -45,8 +46,8 @@ class CarPanel extends React.Component {
   render() {
     return (
       <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#e6ffe6" }}>
-        <img src="assets/steering.png" style={{top:"-65px", left:"-65px",position:"absolute",zIndex:"5"}}></img>
-        <img src="assets/wheel.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "5" }}></img>
+        <img src="assets/steering.png" style={{top:"-65px", left:"-65px",position:"absolute",zIndex:"100"}}></img>
+        <img src="assets/wheel.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "100" }}></img>
         <div className="ui grid">
           <div className="row centered">
             <h2 className="ui header">

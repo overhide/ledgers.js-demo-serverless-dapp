@@ -88,7 +88,7 @@ class CarPanelCheck extends React.Component {
         <div className="row centered">
           <div className="twelve wide column">
             <span className="ui heading"style={{fontSize: "larger", fontStyle: "italic", width: "80%"}}>time remaining</span>
-            <a onClick={() => this.props.doHint('foo')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>
+            <a onClick={() => this.props.doHint('carAppTimeRemaining')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>
           </div>                
         </div>
         <div className="row centered twelve wide">

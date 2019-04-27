@@ -22,14 +22,22 @@ class MapPanel extends React.Component {
     };
   }
 
+  checkAndSetAtCar = () => {
+    this.props.atCarSetterFn(this.state.carLeft == this.state.hunterLeft && this.state.carTop == this.state.hunterTop);
+  }
+
   moveCar = (destination) => {
     this.setState({ carZone: destination.zone, carLeft: destination.left, carTop: destination.top});
+    setTimeout(this.checkAndSetAtCar, 100);
   }
 
   moveHunter = () => {
     if (this.state.carZone) {
       this.setState({ hunterLeft: this.state.carLeft, hunterTop: this.state.carTop });
     }
+    this.props.hunterCoordsSetterFn(this.state.carLeft, this.state.carTop);
+    this.props.hunterZoneSetterFn(this.state.carZone);
+    setTimeout(this.checkAndSetAtCar, 2100);
   }
 
   render() {

@@ -4,9 +4,9 @@ contract TollEnforce {
 
     address owner;
     
-    uint public rewardValue;                                           // current reward in Wei when perpetrator nabbed by enforcer, paid out on GoodReport
-    uint public minStakeValue;                                         // current bounty hunter stake in Wei for reporting perpetrator, returned on GoodReport or ExpiredReport
-    uint public bountyTimePeriodSeconds;                               // how many seconds--since report--a bounty is active for
+    uint public rewardValue = 100000000000000;                         // current reward in Wei when perpetrator nabbed by enforcer, paid out on GoodReport
+    uint public minStakeValue = 100000000000000;                       // current bounty hunter stake in Wei for reporting perpetrator, returned on GoodReport or ExpiredReport
+    uint public bountyTimePeriodSeconds = 30;                          // how many seconds--since report--a bounty is active for
     
     struct Report {                                                    // bounty report by hunter
         bool isPending;                                                // is report still pending reconciliation?
