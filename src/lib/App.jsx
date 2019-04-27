@@ -35,7 +35,7 @@ class App extends React.Component {
   //
   // @param {string} value - error value or null
   setError = (value) => {
-    console.log('setError() :: ' + value);
+    console.log('display error :: ' + value);
     this.setState({ error: value });
   };
 
@@ -43,8 +43,13 @@ class App extends React.Component {
   //
   // @param {string} which - hint key
   doHint = (which) => {
-    if (which) this.setState({hint: config.hints[which]});
-    else this.setState({ hint: null });
+    if (which) {
+      console.log('displaying hint :: ' + config.hints[which]);
+      this.setState({hint: config.hints[which]});
+    } else {
+      console.log('clearing hint');
+      this.setState({ hint: null });
+    }
   }
 
   render() {

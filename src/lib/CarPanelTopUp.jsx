@@ -1,6 +1,6 @@
 import oh$ from "ledgers.js";
 import config from "../config.json";
-import {getAdmin, makePretendChallenge,makePretendChallengeAndSign} from "./utils";
+import {delay, getAdmin, makePretendChallenge,makePretendChallengeAndSign} from "./utils";
 
 import React from "react";
 
@@ -144,7 +144,17 @@ class CarPanelTopUp extends React.Component {
       this.props.doHint('topupWalletSign');
       var signature = await oh$.sign(imparter, challenge);
       this.props.doHint('topupWalletPay');
+      let aDayAgo = new Date((new Date()).getTime() - 24*60*60*1000);     // we compare tallies...
+      let before = await oh$.getTally(imparter, {address: to}, aDayAgo);  // ... by taking a sample before
       await oh$.createTransaction(imparter, amount, to);
+      this.props.doHint('topupWalletConsistent');
+      for (var i = 0; i < 12; i++) {
+        let now = await oh$.getTally(imparter, { address: to }, aDayAgo); // ... we take a sample now
+        if (now > before) break;                                          // ... and exit out as soon as decentralized
+                                                                          //     ledger is consistent between the wallet's
+                                                                          //     node and ledgers.js node
+        await delay(5000);                                                // ... else wait 5 seconds
+      }
       this.doTopup(imparter, this.state.payerAddress[imparter], signature, challenge);
     } catch (error) {
       this.props.setError(new String(error));
@@ -188,9 +198,13 @@ class CarPanelTopUp extends React.Component {
       })
     })
     .then(response => {
-      this.props.doHint(null);
-      this.props.setLoading(false);
-      return;
+      if (response.status == 200) {
+        this.props.doHint(null);
+        this.props.setLoading(false);
+        if (this.props.checkTimeRemaining) this.props.checkTimeRemaining();
+      } else {
+        return result.text().then(error => {throw error});
+      }
     })
     .catch(error => { 
       this.props.setLoading(false);

@@ -52,3 +52,11 @@ export function makePretendChallengeAndSign(privateKey) {
   v = parseInt(v);
   return { messageHash, r, s, v };
 }
+
+/**
+ * @param {number} t - millis to delay
+ * @returns {Promise} completing when delay is done
+ */
+export function delay(t) {
+  return new Promise(resolve => setTimeout(resolve.bind(null), t));
+};

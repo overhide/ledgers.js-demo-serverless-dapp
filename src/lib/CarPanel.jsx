@@ -16,13 +16,13 @@ class CarPanel extends React.Component {
         zoneB: 'none',
         zoneC: 'none'
       }, 
-      loading: false
+      loading: false,
+      checkTimeRemainingFn: null
     };
   }
 
   // initialize state for car.
   generateCar = () => {
-    this.props.doHint('welcomeCarApp');
     var account = getNewAccount();
     return {
       carAddress: account.address, // Car's Ethereum address
@@ -36,6 +36,11 @@ class CarPanel extends React.Component {
   setLoading = (value) => {
     this.setState({ loading: value });
   };
+
+  // @param {} fn - to be called whenever we want to re-check time remaining in zones
+  setCheckTimeRemainingFn = (fn) => {
+    this.setState({ checkTimeRemainingFn: fn});
+  }
 
   render() {
     return (
@@ -69,7 +74,8 @@ class CarPanel extends React.Component {
                   privateKey={this.state.privateKey}
                   setError={this.props.setError}
                   setLoading={this.setLoading}
-                  doHint={this.props.doHint} />
+                  doHint={this.props.doHint}
+                  setCheckTimeRemainingFn={this.setCheckTimeRemainingFn} />
               </div>
             </div>
           </div>
@@ -81,7 +87,8 @@ class CarPanel extends React.Component {
                   privateKey={this.state.privateKey}
                   setError={this.props.setError}
                   setLoading={this.setLoading}
-                  doHint={this.props.doHint} />
+                  doHint={this.props.doHint}
+                  checkTimeRemaining={this.state.checkTimeRemainingFn} />
               </div>
             </div>
           </div>
