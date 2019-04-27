@@ -1,5 +1,3 @@
-const PERIOD_SECONDS = 24 * 60 * 60;
-
 // from https://github.com/LinusU/array-buffer-to-hex/blob/master/index.js
 function arrayBufferToHex (arrayBuffer) {
   if (typeof arrayBuffer !== 'object' || arrayBuffer === null || typeof arrayBuffer.byteLength !== 'number') {
@@ -36,12 +34,14 @@ function arrayBufferToHex (arrayBuffer) {
 //     | padding               | 20           |
 module.exports = async function (context, req) {
     if (req.body.ledgerKey
+        && req.body.topupPeriodMinutes
         && req.body.txs 
         && req.body.lastPaymentUnixTime
         && req.body.zoneAPrice
         && req.body.zoneBPrice
         && req.body.zoneCPrice) {
 
+        var topupPeriodSeconds = req.body.topupPeriodMinutes * 60;
         var txs = req.body.txs;
         var cutoffTime = req.body.lastPaymentUnixTime;
 
@@ -50,7 +50,7 @@ module.exports = async function (context, req) {
         // [3] filter out records from previous update (by cutofTime)
         var txEnds = txs.transactions.map((rec) => {return {value: rec["transaction-value"], time: parseInt((new Date(rec["transaction-date"]).getTime())/1000)}})
             .sort((recA, recB) => recA.time - recB.time)
-            .map((rec) => {return {value: rec.value, time: rec.time + PERIOD_SECONDS}})
+            .map((rec) => {return {value: rec.value, time: rec.time + topupPeriodSeconds}})
             .filter((rec) => rec.time > cutoffTime);
 
         // filter time duplicates (is etherscan returning duplicates?)

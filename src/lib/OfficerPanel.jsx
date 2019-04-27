@@ -7,12 +7,20 @@ class OfficerPanel extends React.Component {
     super(props);
 
     this.state = {
+      loading: false
     };
   }
 
+  // Is the app loading?
+  //
+  // @param {boolean} value 
+  setLoading = (value) => {
+    this.setState({ loading: value });
+  };
+
   render() {
     return (
-      <div className="ui segment black" style={{ background: "#e6e6ff" }}>
+      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#e6e6ff" }}>
         <img src="assets/jail.png" style={{ top: "-65px", left: "-65px", position: "absolute", zIndex: "5" }}></img>
         <img src="assets/handcuffs.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">

@@ -1,12 +1,15 @@
 {
-  "admin__FormId": "24",
-  "ethereumContractAddress": "0xd3ef485ade4e3cf00c2268f74cc79a0aa559de89",
+  "admin__FormId": "26",
+  "ethereumContractAddress": "0xdbdb880d18c00d76ba6199f17b4041469874f755",
   "adminData__AzureURL": "https://prod-13.eastus.logic.azure.com/workflows/f4db8bb331054244bf4a5d20fd961024/triggers/manual/paths/invoke/formId/{formId}?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8vm4Cr1pi1VKH9KTdqIvZQ-TZBi7BPn7DBVVnedyQbg",
   "getTimeRemaining__AzureURL": "https://prod-38.eastus.logic.azure.com:443/workflows/834975ece9c44aec97018ec17367c2f1/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2470MxS6NCjogWU1eir9TMFQpPzfa-yFq04DpFAJgFk",
   "topup__AzureURL": "https://prod-43.eastus.logic.azure.com:443/workflows/89392e2f617e4216aa238fdfdd284c73/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Qk1aNJNRCRdyiEDKWKmt87aYZTlpBh8u4vbqDkjmF9o",
   "hints": {
     "carApp": "car generated!",
     "tollApp": "welcome toll app",
-    "foo": "bar"
+    "foo": "bar",
+    "topupWalletSign": "Please be patient, this can take a while: signing for the car's address.",
+    "topupWalletPay": "Please be patient, this can take a while: paying top-up fee.",
+    "topupWalletAzure": "Please be patient, this can take a while.  Talking to Azure which interacts with smart-contract."
   }
 }

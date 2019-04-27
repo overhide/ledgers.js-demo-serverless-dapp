@@ -15,7 +15,8 @@ class CarPanel extends React.Component {
         zoneA: 'none',
         zoneB: 'none',
         zoneC: 'none'
-      }
+      }, 
+      loading: false
     };
   }
 
@@ -29,9 +30,16 @@ class CarPanel extends React.Component {
     }
   };
 
+  // Is the app loading?
+  //
+  // @param {boolean} value 
+  setLoading = (value) => {
+    this.setState({ loading: value });
+  };
+
   render() {
     return (
-      <div className="ui segment black" style={{ background: "#e6ffe6" }}>
+      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#e6ffe6" }}>
         <img src="assets/steering.png" style={{top:"-65px", left:"-65px",position:"absolute",zIndex:"5"}}></img>
         <img src="assets/wheel.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">
@@ -60,7 +68,7 @@ class CarPanel extends React.Component {
                   carAddress={this.state.carAddress}
                   privateKey={this.state.privateKey}
                   setError={this.props.setError}
-                  setLoading={this.props.setLoading}
+                  setLoading={this.setLoading}
                   doHint={this.props.doHint} />
               </div>
             </div>
@@ -72,7 +80,7 @@ class CarPanel extends React.Component {
                   carAddress={this.state.carAddress}
                   privateKey={this.state.privateKey}
                   setError={this.props.setError}
-                  setLoading={this.props.setLoading}
+                  setLoading={this.setLoading}
                   doHint={this.props.doHint} />
               </div>
             </div>

@@ -141,7 +141,9 @@ class CarPanelTopUp extends React.Component {
     }
     var challenge = makePretendChallenge();    
     try {
+      this.props.doHint('topupWalletSign');
       var signature = await oh$.sign(imparter, challenge);
+      this.props.doHint('topupWalletPay');
       await oh$.createTransaction(imparter, amount, to);
       this.doTopup(imparter, this.state.payerAddress[imparter], signature, challenge);
     } catch (error) {
@@ -161,6 +163,7 @@ class CarPanelTopUp extends React.Component {
   doTopup = (ledgerKey, payerAddress, payerSignature, signatureChallenge) => {
     this.props.setLoading(true);
     var carSignature = makePretendChallengeAndSign(this.props.privateKey);
+    this.props.doHint('topupWalletAzure');
     fetch(config.topup__AzureURL, {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -185,12 +188,14 @@ class CarPanelTopUp extends React.Component {
       })
     })
     .then(response => {
+      this.props.doHint(null);
       this.props.setLoading(false);
-      return this.props.setLoading(false)
+      return;
     })
     .catch(error => { 
       this.props.setLoading(false);
-      return this.props.setLoading(false); this.props.setError(error);
+      this.props.setError(error);
+      return; 
     });
   }
 

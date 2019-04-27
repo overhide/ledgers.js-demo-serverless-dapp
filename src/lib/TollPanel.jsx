@@ -7,12 +7,20 @@ class TollPanel extends React.Component {
     super(props);
 
     this.state = {
+      loading: false
     };
   }
 
+  // Is the app loading?
+  //
+  // @param {boolean} value 
+  setLoading = (value) => {
+    this.setState({ loading: value });
+  };
+
   render() {
     return (
-      <div className="ui segment black" style={{ background: "#f2f2f2" }}>
+      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#f2f2f2" }}>
         <img src="assets/spy.png" style={{ top: "-65px", left: "-65px", position: "absolute", zIndex: "5" }}></img>
         <img src="assets/pin.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">

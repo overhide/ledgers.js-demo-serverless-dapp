@@ -39,18 +39,12 @@ class App extends React.Component {
     this.setState({ error: value });
   };
 
-  // Is the app re-loading?
-  //
-  // @param {boolean} value 
-  setLoading = (value) => {
-    this.setState({ loading: value });
-  };
-
   // Take hint text from *config.json* and display as modal
   //
   // @param {string} which - hint key
   doHint = (which) => {
-    this.setState({hint: config.hints[which]});
+    if (which) this.setState({hint: config.hints[which]});
+    else this.setState({ hint: null });
   }
 
   render() {
@@ -105,7 +99,6 @@ class App extends React.Component {
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
                   <CarPanel
                     setError={this.setError}
-                    setLoading={this.setLoading}
                     doHint={this.doHint} />
                 </div>
               </div>
@@ -115,13 +108,11 @@ class App extends React.Component {
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
                   <TollPanel
                     setError={this.setError}
-                    setLoading={this.setLoading}
                     doHint={this.doHint} />
                 </div>
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto", marginTop: "105px" }}>
                   <OfficerPanel
                     setError={this.setError}
-                    setLoading={this.setLoading}
                     doHint={this.doHint} />
                 </div>
               </div>

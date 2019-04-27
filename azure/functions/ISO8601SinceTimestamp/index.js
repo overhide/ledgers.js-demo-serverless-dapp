@@ -1,8 +1,9 @@
-const TIME_BACK_SECONDS = 24 * 60 * 60;
-
 module.exports = async function (context, req) {
-    var time = new Date((new Date()).getTime() - (TIME_BACK_SECONDS * 1000));
-    context.res = {        
-        body: time.toISOString()
-    };
+    if (req.body.topupPeriodMinutes) {
+        var topupPeriodSeconds = req.body.topupPeriodMinutes * 60;
+        var time = new Date((new Date()).getTime() - (topupPeriodSeconds * 1000));
+        context.res = {
+            body: time.toISOString()
+        };
+    }
 };

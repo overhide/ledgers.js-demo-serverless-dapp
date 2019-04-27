@@ -91,6 +91,8 @@ contract TollEnforce {
     // @param byWhom - who made the topup payment: sha256 hash with format `<address>@<imparterTag>` where imparterTag is as per ledgers.js
     // @param newZoneTimeoutsBytes - Unix time seconds when zone permits expire forCar:  32 byte hex string first 4 bytes: zonaA, next zoneB, next zoneC
     // @param carSig* - signature checking values, see 'validate' modifier
+    //
+    // Note: if this code looks convoluted in places, it's adjustments to avoid 'stack too deep' errors
     function topup(address forCar, 
                    bytes32 byWhom, 
                    bytes32 newZoneTimeoutsBytes, 
@@ -110,9 +112,12 @@ contract TollEnforce {
             // car not tracked yet
             currentCars.push(forCar);
         }
-        carToZoneATimeoutUnixTime[forCar] = newZoneTimeouts[0];
-        carToZoneBTimeoutUnixTime[forCar] = newZoneTimeouts[1];
-        carToZoneCTimeoutUnixTime[forCar] = newZoneTimeouts[2];
+        if (carToZoneATimeoutUnixTime[forCar] < newZoneTimeouts[0]) carToZoneATimeoutUnixTime[forCar] = newZoneTimeouts[0];
+        if (carToZoneBTimeoutUnixTime[forCar] < newZoneTimeouts[1]) carToZoneBTimeoutUnixTime[forCar] = newZoneTimeouts[1];
+        if (carToZoneCTimeoutUnixTime[forCar] < newZoneTimeouts[2]) carToZoneCTimeoutUnixTime[forCar] = newZoneTimeouts[2];
+        newZoneTimeouts[0] = carToZoneATimeoutUnixTime[forCar];
+        newZoneTimeouts[1] = carToZoneBTimeoutUnixTime[forCar];
+        newZoneTimeouts[2] = carToZoneCTimeoutUnixTime[forCar];
         emit Topup(forCar, byWhom, newZoneTimeouts[0], newZoneTimeouts[1], newZoneTimeouts[2]);
     }
 
