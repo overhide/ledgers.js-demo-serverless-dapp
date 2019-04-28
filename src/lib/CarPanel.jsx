@@ -46,8 +46,7 @@ class CarPanel extends React.Component {
   render() {
     return (
       <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#e6ffe6" }}>
-        <img src="assets/steering.png" style={{top:"-65px", left:"-65px",position:"absolute",zIndex:"100"}}></img>
-        <img src="assets/wheel.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "100" }}></img>
+        <img src="assets/steering.png" style={{top:"5px", left:"5px", width:"50px", position:"absolute",zIndex:"5"}}></img>
         <div className="ui grid">
           <div className="row centered">
             <h2 className="ui header">

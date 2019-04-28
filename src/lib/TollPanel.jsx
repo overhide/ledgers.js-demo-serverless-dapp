@@ -10,7 +10,7 @@ class TollPanel extends React.Component {
 
     this.state = {
       loading: false,
-      log: `will be reporting some car\n...if we can catch it\n...click the citizen/hunter to catch car.`
+      log: `will be reporting some car\n...if we can catch it\n...click the bounty hunter to catch car.`
     };
   }
 
@@ -58,11 +58,13 @@ class TollPanel extends React.Component {
           resolve();
         })
         .on('error', (error) => {
-          reject(error);
+          console.log('display error :: ' + new String(error));
+          this.log('+---------------+\n| REPORT DENIED |\n+---------------+');
+          resolve();
         });
       });
       this.log(`car ${addressForLog} reported @ (${this.props.hunterCoords.x},${this.props.hunterCoords.y})`);
-    } catch (e) {
+    } catch (e) {     
       this.props.setError(new String(e));
     }
 
@@ -78,8 +80,7 @@ class TollPanel extends React.Component {
   render() {
     return (
       <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#f2f2f2" }}>
-        <img src="assets/spy.png" style={{ top: "-65px", left: "-65px", position: "absolute", zIndex: "100" }}></img>
-        <img src="assets/pin.png" style={{ top: "-65px", right: "-65px", position: "absolute", zIndex: "100" }}></img>
+        <img src="assets/pin.png" style={{ top: "5px", right: "5px", width: "40px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">
           <div className="row centered">
             <h2 className="ui header">
@@ -91,7 +92,7 @@ class TollPanel extends React.Component {
           </div>
           <div className="row centered">
             <div className="twelve wide column">
-              <div className={`ui black ${this.props.atCar ? "" : "disabled"} button`} style={{ width: "80%" }} onClick={() => this.report()}>
+              <div className={`ui primary ${this.props.atCar ? "" : "disabled"} button`} style={{ width: "90%" }} onClick={() => this.report()}>
                 check and report
               </div>
               <a onClick={() => this.props.doHint('tollAppReportButton')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>              
@@ -99,7 +100,7 @@ class TollPanel extends React.Component {
           </div>
           <div className="row centered">
             <div className="twelve wide column">
-              <textarea rows="10" readOnly style={{ width: "100%" }} value={this.state.log} onChange={() => {}}></textarea>
+              <textarea rows="10" readOnly style={{ width: "100%", fontFamily: "monospace", fontSize: "x-small"  }} value={this.state.log} onChange={() => {}}></textarea>
             </div>
           </div>
         </div>

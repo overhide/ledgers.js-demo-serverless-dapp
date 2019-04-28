@@ -1,4 +1,5 @@
 import React from "react";
+import config from '../config.json';
 
 const home = { left: 30, top: 710, zone: null};
 const cityhall = {left: 202, top: 410, zone: 'A'};
@@ -18,7 +19,9 @@ class MapPanel extends React.Component {
       carLeft: 30,
       carTop: 710,
       hunterLeft: 364,
-      hunterTop: 712
+      hunterTop: 712,
+      enforcementLeft: 215,
+      enforcementTop: 700
     };
   }
 
@@ -28,6 +31,7 @@ class MapPanel extends React.Component {
 
   moveCar = (destination) => {
     this.setState({ carZone: destination.zone, carLeft: destination.left, carTop: destination.top});
+    this.props.carCoordsSetterFn(destination.left, destination.top, destination.zone);
     setTimeout(this.checkAndSetAtCar, 100);
   }
 
@@ -48,8 +52,8 @@ class MapPanel extends React.Component {
         <img src="assets/car.png" id='car' style={{ 
           position: "absolute", 
           zIndex: "5",
-          WebkitTransition: "left 2s ease-in-out, top 2s ease-in-out",
-          transition: "left 2s ease-in-out, top 2s ease-in-out",
+          WebkitTransition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
+          transition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
           top: `${this.state.carTop}px`, 
           left: `${this.state.carLeft}px` }}>
         </img>
@@ -57,10 +61,18 @@ class MapPanel extends React.Component {
           position: "absolute", 
           zIndex: "7",
           cursor: "crosshair",
-          WebkitTransition: "left 2s ease-in-out, top 2s ease-in-out",
-          transition: "left 2s ease-in-out, top 2s ease-in-out",
+          WebkitTransition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
+          transition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
           top: `${this.state.hunterTop}px`, 
           left: `${this.state.hunterLeft}px` }}>
+        </img>
+        <img src="assets/policecar.png" style={{ 
+          position: "absolute", 
+          zIndex: "7",
+          WebkitTransition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
+          transition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
+          top: `${this.state.enforcementTop}px`, 
+          left: `${this.state.enforcementLeft}px` }}>
         </img>
         <img src="assets/home.png" onClick={() => this.moveCar(home)} style={{ position: "absolute", zIndex: "3", left: `${home.left}px`, top: `${home.top}px`, cursor: "crosshair" }}></img>
         <img src="assets/cityhall.png" onClick={() => this.moveCar(cityhall)} style={{ position: "absolute", zIndex: "3", left: `${cityhall.left}px`, top: `${cityhall.top}px`, cursor: "crosshair"}}></img>

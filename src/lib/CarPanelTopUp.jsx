@@ -214,7 +214,7 @@ class CarPanelTopUp extends React.Component {
       <div className="ui grid">
         <div className="row centered">
           <div className="twelve wide column">
-            <div className="ui buttons" style={{width: "80%"}}>
+            <div className="ui buttons" style={{width: "90%"}}>
               <button className={`ui primary ${this.state.dollarsEnabled ? '' : 'disabled'} button`} onClick={() => this.chooseDollars()}>dollars</button>
               <div className="or"></div>
               <button className={`ui primary ${this.state.ethersEnabled ? '' : 'disabled'} button`} onClick={() => this.chooseEthers()}>ethers</button>

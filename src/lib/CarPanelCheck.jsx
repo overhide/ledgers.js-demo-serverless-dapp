@@ -78,7 +78,7 @@ class CarPanelCheck extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.checkTimeRemaining(true), 2000);   // 2 seconds after mounting hit up Azure
+    setTimeout(() => this.checkTimeRemaining(true), config.animationTimeSeconds * 1000);   // # seconds after mounting hit up Azure
     setInterval(() => this.checkTimeRemaining(true), 30000); // every 30 seconds silently hit up Azure
   }
 
@@ -87,7 +87,7 @@ class CarPanelCheck extends React.Component {
       <div className="ui grid">
         <div className="row centered">
           <div className="twelve wide column">
-            <span className="ui heading"style={{fontSize: "larger", fontStyle: "italic", width: "80%"}}>time remaining</span>
+            <span className="ui heading"style={{fontSize: "larger", fontStyle: "italic", width: "90%"}}>time remaining</span>
             <a onClick={() => this.props.doHint('carAppTimeRemaining')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>
           </div>                
         </div>

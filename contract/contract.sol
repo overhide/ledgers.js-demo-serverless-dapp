@@ -27,12 +27,12 @@ contract TollEnforce {
     mapping (address => uint) public carToZoneCTimeoutUnixTime;        // map when zone C permit expires for cars
     address[] public currentCars;                                      // list all cars tracked
     
-    event Topup(address indexed forCar, bytes32 byWhom, uint newZoneATimeout, uint newZoneBTimeout, uint newZoneCTimeout);
+    event Topup(address forCar, bytes32 byWhom, uint newZoneATimeout, uint newZoneBTimeout, uint newZoneCTimeout);
 
-    event NewReport(address indexed forCar, uint carXCoordinate, uint carYCoordinate, uint zoneIndex);
-    event BadReport(address indexed forCar);
-    event GoodReport(address indexed forCar);
-    event ExpiredReport(address indexed forCar);
+    event NewReport(address forCar, uint carXCoordinate, uint carYCoordinate, uint zoneIndex);
+    event BadReport(address forCar);
+    event GoodReport(address forCar);
+    event ExpiredReport(address forCar);
 
     constructor() public {
         owner = msg.sender;

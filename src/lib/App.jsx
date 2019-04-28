@@ -18,6 +18,8 @@ class App extends React.Component {
       hint: null,
       atCar: false,
       carAddress: null,
+      carCoords: {x: null, y: null, zone: null},
+      enforcementCoords: { x: null, y: null },
       hunterCoords: {x: null, y: null},
       hunterZone: null
     };
@@ -65,6 +67,14 @@ class App extends React.Component {
     this.setState({atCar: flag});
   }
 
+  setCarCoords = (x, y, zone) => {
+    this.setState({ carCoords: { x: x, y: y, zone: zone } });
+  }
+
+  setEnforcementCoords = (x, y) => {
+    this.setState({ enforcementCoords: { x: x, y: y } });
+  }
+
   setHunterCoords = (x, y) => {
     this.setState({hunterCoords: {x: x, y: y}});
   }
@@ -110,7 +120,7 @@ class App extends React.Component {
           <div className={`ui ${this.state.loading ? "active" : ""} dimmer`}>
             <div className="ui loader"></div>
           </div>
-          <div style={{position: "absolute", top: "5px", left: "10%", width: "80%", zIndex: "10", opacity: "0.8"}}>
+          <div style={{position: "absolute", top: "5px", left: "10%", width: "90%", zIndex: "110", opacity: "0.8"}}>
             {/* error banner for whole page */}
             {error}
             {/* hint banner */}
@@ -134,6 +144,8 @@ class App extends React.Component {
                   setError={this.setError}
                   doHint={this.doHint}
                   atCarSetterFn={this.setAtCar}
+                  carCoordsSetterFn={this.setCarCoords}
+                  enforcementCoords={this.state.enforcementCoords}
                   hunterCoordsSetterFn={this.setHunterCoords}
                   hunterZoneSetterFn={this.setHunterZone} />
               </div>
@@ -150,7 +162,10 @@ class App extends React.Component {
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto", marginTop: "105px" }}>
                   <OfficerPanel
                     setError={this.setError}
-                    doHint={this.doHint} />
+                    doHint={this.doHint}
+                    carAddress={this.state.carAddress}
+                    carCoords={this.state.carCoords}
+                    enforcementCoordsSetterFn={this.setEnforcementCoords} />
                 </div>
               </div>
             </div>
