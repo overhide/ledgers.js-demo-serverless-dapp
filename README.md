@@ -165,7 +165,15 @@ demonstrates how Azure can be leveraged by app developers who do not want to be 
 >
 > *Car Top-Up App* doesn't need the wallet:  you can pay using dollars.  However, if a wallet is connected to Rinkeby the payment for ethers option will be enabled.
 
-To run the demo simply sync this repo and open [dist/index.html] with your browser *OR* visit [these forked GitHub pages](https://jakubner.github.io/bc-community-samples/toll-device-app/dist/index.html).
+To run the demo you can either:
+
+* visit [these forked GitHub pages](https://jakubner.github.io/bc-community-samples/toll-device-app/dist/index.html)
+* build and run yourself:
+    * sync repo
+    * `npm run install`
+    * `npm run build`
+    * `npm run serve`
+    * open *http://localhost:8080* with browser (or whatever port is indicated on command line)
 
 The demo simulates three "apps" and the interaction between cars (drivers), citizen bounty hunters, and the city toll-enforcement officers:
 

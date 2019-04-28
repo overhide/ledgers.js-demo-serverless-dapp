@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --module-bind js=babel-loader",
+    "serve": "http-server ./dist",
     "watch": "webpack --module-bind js=babel-loader --watch"
   },
   "repository": {
@@ -31,6 +32,7 @@
     "hard-source-webpack-plugin": "^0.13.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "http-server": "0.11.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "webpack": "^4.30.0",
