@@ -10,3 +10,5 @@ This is a demo of several things:
     * no need to write own backend code
     * multi-currency support: fiat and crypto
 
+# Workflows
+

@@ -7,18 +7,21 @@
   "topup__AzureURL": "https://prod-43.eastus.logic.azure.com:443/workflows/89392e2f617e4216aa238fdfdd284c73/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Qk1aNJNRCRdyiEDKWKmt87aYZTlpBh8u4vbqDkjmF9o",
   "admin__AzureURL": "https://prod-55.eastus.logic.azure.com:443/workflows/5620e64c422e491889783131fb0ddac6/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=aPhx4-gIfPUqTDI2XXmvq3ZKxRTWPRoYpzNNHc9xMNM",
   "poll__AzureURL": "https://prod-19.eastus.logic.azure.com:443/workflows/6e452ad65ad8435396cc15b69c3b87ba/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hwycZeil79HpOKN_lbMmtvGa4XkDyGTZWDdhnwT3KyE",
+  "reconcile__AzureURL": "https://prod-47.eastus.logic.azure.com:443/workflows/cb8865e2821c4d3c8df38153036a7778/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=1jsXMmDMbB0zGFTjRTOSLmqcDIRZolTULifGyTxIxRM",
   "animationTimeSeconds": 2,
   "hints": {
     "carApp": "car generated!",
     "carAppTimeRemaining": "",
     "carAppButtons": "",
-    "topupWalletSign": "Please be patient, this can take a while: signing for the car's address.",
-    "topupWalletPay": "Please be patient, this can take a while: paying top-up fee.",
+    "topupWalletSign": "Please be patient, this can take a while: signing for the car's address using 'ledgers.js' overhide library.",
+    "topupWalletPay": "Please be patient, this can take a while: paying top-up fee using 'ledgers.js' overhide library.",
     "topupWalletConsistent": "Please be patient, this can take a while: waiting for decentralized payment node consistency.",
-    "topupWalletAzure": "Please be patient, this can take a while.  Talking to Azure which interacts with smart-contract.",
-    "checkTimeAzure": "Please be patient, this can take a while.  Checking top-up times against smart-contract with Azure.",
+    "topupWalletAzure": "Please be patient, this can take a while.  Calling 'toll-enforce-topup' Azure Logic App:  calls 'topup' in Ethereum contract.",
+    "checkTimeAzure": "Please be patient, this can take a while.  Calling 'toll-enforce-check' Azure Logic App:  calls 'getZone*Timeout' in Ethereum contract.",
     "tollApp": "welcome toll app",
     "tollAppReportButton": "",
-    "enforcementApp": ""
+    "tollAppDoReport": "Please be patient, this can take a while.  Calling 'doReport' in Ethereum smart-contract using web3.js direct (no Azure).  Check wallet to confirm.",
+    "enforcementApp": "",
+    "enforcementAppAdmin": "Please be patient, this can take a while.  Calling 'toll-enforce-admin' Azure Logic App:  calls 'purgeCars' and 'expireReports' in Ethereum contract."
   }
 }

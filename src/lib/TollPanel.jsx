@@ -46,24 +46,27 @@ class TollPanel extends React.Component {
       this.log('seconds before bounty expires: ' + await contract.methods.bountyTimePeriodSeconds().call());
       this.log('minimum stake value: ' + stake);
       this.log('bounty reward value: ' + await contract.methods.rewardValue().call());
-      this.log(`calling doReport on car ${addressForLog} @ (${this.props.hunterCoords.x},${this.props.hunterCoords.y})`);
+      this.log(`calling doReport on car ${addressForLog} @ (${this.props.hunterCoordsX},${this.props.hunterCoordsY})`);
+      this.props.doHint('tollAppDoReport');
       await new Promise((resolve, reject) => {
         contract.methods.doReport(
           this.props.carAddress, 
-          this.props.hunterCoords.x, 
-          this.props.hunterCoords.y, 
-          zoneToIndexMap[this.props.hunterZone])
+          this.props.hunterCoordsX, 
+          this.props.hunterCoordsY, 
+          zoneToIndexMap[this.props.hunterCoordsZone])
           .send({from: currentAddress, value: stake})
-        .on('confirmation', function (confirmationNumber, receipt) {
+        .on('confirmation', (confirmationNumber, receipt) => {
+          if (confirmationNumber == 1) {
+            this.log(`car ${addressForLog} reported @ (${this.props.hunterCoordsX},${this.props.hunterCoordsY})`);
+          }
           resolve();
         })
         .on('error', (error) => {
           console.log('display error :: ' + new String(error));
-          this.log('+---------------+\n| REPORT DENIED |\n+---------------+');
+          this.log('\n+---------------+\n| REPORT DENIED |\n+---------------+\n');
           resolve();
         });
       });
-      this.log(`car ${addressForLog} reported @ (${this.props.hunterCoords.x},${this.props.hunterCoords.y})`);
     } catch (e) {     
       this.props.setError(new String(e));
     }
@@ -79,7 +82,7 @@ class TollPanel extends React.Component {
 
   render() {
     return (
-      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#f2f2f2" }}>
+      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`}>
         <img src="assets/pin.png" style={{ top: "5px", right: "5px", width: "40px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">
           <div className="row centered">
@@ -100,7 +103,7 @@ class TollPanel extends React.Component {
           </div>
           <div className="row centered">
             <div className="twelve wide column">
-              <textarea rows="10" readOnly style={{ width: "100%", fontFamily: "monospace", fontSize: "x-small"  }} value={this.state.log} onChange={() => {}}></textarea>
+              <textarea rows="10" readOnly style={{ width: "100%", fontFamily: "monospace", fontSize: "x-small", backgroundColor: "#F0F0F0"}} value={this.state.log} onChange={() => {}}></textarea>
             </div>
           </div>
         </div>

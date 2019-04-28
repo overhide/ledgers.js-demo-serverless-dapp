@@ -18,10 +18,14 @@ class App extends React.Component {
       hint: null,
       atCar: false,
       carAddress: null,
-      carCoords: {x: null, y: null, zone: null},
-      enforcementCoords: { x: null, y: null },
-      hunterCoords: {x: null, y: null},
-      hunterZone: null
+      carCoordsX: null,
+      carCoordsY: null,
+      carCoordsZone: null,
+      enforcementCoordsX: null,
+      enforcementCoordsY: null,
+      hunterCoordsX: null,
+      hunterCoordsY: null,
+      hunterCoordsZone: null
     };
 
     this.fetchAdmin();
@@ -68,19 +72,15 @@ class App extends React.Component {
   }
 
   setCarCoords = (x, y, zone) => {
-    this.setState({ carCoords: { x: x, y: y, zone: zone } });
+    this.setState({ carCoordsX: x, carCoordsY: y, carCoordsZone: zone });
   }
 
   setEnforcementCoords = (x, y) => {
-    this.setState({ enforcementCoords: { x: x, y: y } });
+    this.setState({ enforcementCoordsX: x, enforcementCoordsY: y });
   }
 
-  setHunterCoords = (x, y) => {
-    this.setState({hunterCoords: {x: x, y: y}});
-  }
-
-  setHunterZone = (zone) => {
-    this.setState({hunterZone: zone});
+  setHunterCoords = (x, y, zone) => {
+    this.setState({ hunterCoordsX: x, hunterCoordsY: y, hunterCoordsZone: zone });
   }
 
   render() {
@@ -145,9 +145,9 @@ class App extends React.Component {
                   doHint={this.doHint}
                   atCarSetterFn={this.setAtCar}
                   carCoordsSetterFn={this.setCarCoords}
-                  enforcementCoords={this.state.enforcementCoords}
-                  hunterCoordsSetterFn={this.setHunterCoords}
-                  hunterZoneSetterFn={this.setHunterZone} />
+                  enforcementCoordsX={this.state.enforcementCoordsX}
+                  enforcementCoordsY={this.state.enforcementCoordsY}
+                  hunterCoordsSetterFn={this.setHunterCoords} />
               </div>
               <div className="column" style={{ minWidth: "550px", maxWidth: "550px", marginTop: "65px"}}>
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
@@ -156,15 +156,18 @@ class App extends React.Component {
                     doHint={this.doHint}
                     atCar={this.state.atCar}
                     carAddress={this.state.carAddress}
-                    hunterCoords={this.state.hunterCoords}
-                    hunterZone={this.state.hunterZone} />
+                    hunterCoordsX={this.state.hunterCoordsX}
+                    hunterCoordsY={this.state.hunterCoordsY}
+                    hunterCoordsZone={this.state.hunterCoordsZone}/>
                 </div>
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto", marginTop: "105px" }}>
                   <OfficerPanel
                     setError={this.setError}
                     doHint={this.doHint}
                     carAddress={this.state.carAddress}
-                    carCoords={this.state.carCoords}
+                    carCoordsX={this.state.carCoordsX}
+                    carCoordsY={this.state.carCoordsY}
+                    carCoordsZone={this.state.carCoordsZone}
                     enforcementCoordsSetterFn={this.setEnforcementCoords} />
                 </div>
               </div>

@@ -28,14 +28,14 @@ class OfficerPanel extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(this.poll, 5000); // poll for events every 5 seconds
+    //setInterval(this.poll, 5000); // poll for events every 5 seconds
   }
 
   /**
    * Poll for dispatch events from Azure
    */
   poll = async () => {
-    this.setState({message: 'polling for dispatches'});
+    this.setState({message: "polling"});
     try {
       let result = await fetch(config.poll__AzureURL, {
         method: "GET",
@@ -45,7 +45,7 @@ class OfficerPanel extends React.Component {
         if (response.status == 200) {
           return response.json()
         } else {
-          return result.text().then(error => { throw error });
+          return response.text().then(error => { throw error });
         }
       });
       if (result.forCar) {
@@ -63,23 +63,50 @@ class OfficerPanel extends React.Component {
    * Issue ticket or collect stake.
    */
   ticket = async (reportedCar, reportedX, reportedY, reportedZoneIndex) => {
-    this.setState({message: 'responding to dispatch'});
+    this.setState({message: "responding"});
+    this.log("responding to dispatch, 'toll-enforce-poll' Azure Logic App gave result");
     this.log(`driving to (${reportedX},${reportedY})`);
-    setTimeout(() => {
-      if (!this.props.carCoords) {
+    setTimeout(
+      async () => {
+      if (!this.props.carCoordsX) {
         this.log(`bad dispatch at (${reportedX},${reportedY})`);
+        this.setState({ message: 'idle' });      
         return;
       }
-      let zoneIndex = zoneToIndexMap[this.props.carCoords.zone];
-      if (this.props.carCoords.x == reportedX
-          && this.props.carCoords.y == reportedY
+      let zoneIndex = zoneToIndexMap[this.props.carCoordsZone];
+      let isDispatchGood = (this.props.carCoordsX == reportedX
+          && this.props.carCoordsY == reportedY
           && zoneIndex == reportedZoneIndex
-          && reportedCar == this.props.carAddress) {
+          && reportedCar.toLowerCase() == this.props.carAddress.toLowerCase());
+      if (isDispatchGood) {
         this.log(`good dispatch at (${reportedX},${reportedY})`);
-        return;
       } else {
         this.log(`bad dispatch at (${reportedX},${reportedY})`);
-        return;
+      }
+      try {
+        this.log(`\nUsing 'toll-enforce-reconcile' Azure Logic App to reconcile report using 'reconcileReport' in Ethereum contract.\n`);
+        await fetch(config.reconcile__AzureURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json; charset=utf-8" },
+          body: JSON.stringify({
+            contractAddress: config.ethereumContractAddress,
+            carAddress: this.props.carAddress,
+            isGood: isDispatchGood
+          })
+        })
+        .then(response => {
+          if (response.status != 200) {
+            response.text().then(error => { throw error });
+          }
+        });
+        if (isDispatchGood) {
+          this.log('\n+--------------+\n| CAR TICKETED |\n+--------------+\n');
+        } else {
+          this.log('\n+--------------------------------+\n| CAR NOT RIGHT, STAKE GARNISHED |\n+--------------------------------+\n');
+        }
+        
+      } catch (e) {
+        this.props.setError(new String(e));
       }
       this.setState({ message: 'idle' });      
     }, config.animationTimeSeconds * 1000);
@@ -91,6 +118,7 @@ class OfficerPanel extends React.Component {
   admin = async () => {
     this.setLoading(true);
     try {
+      this.props.doHint('enforcementAppAdmin');
       this.log('calling admin workflow on Azure');
       let result = await fetch(config.admin__AzureURL, {
         method: "POST",
@@ -103,7 +131,7 @@ class OfficerPanel extends React.Component {
         if (response.status == 200) {
           return response.json()
         } else {
-          return result.text().then(error => { throw error });
+          return response.text().then(error => { throw error });
         }
       });
       this.log('# cars before cleanup: ' + result.beforeNumCars);
@@ -120,7 +148,7 @@ class OfficerPanel extends React.Component {
 
   render() {
     return (
-      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#e6e6ff" }}>
+      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`}>
         <img src="assets/handcuffs.png" style={{ top: "5px", right: "5px", width:"50px", position: "absolute", zIndex: "5" }}></img>
         <div className="ui grid">
           <div className="row centered">
@@ -128,13 +156,13 @@ class OfficerPanel extends React.Component {
               <div className="content">
                 <i>Enforcement App</i>
               </div>
-              <a onClick={() => this.props.doHint('enforcementApp')} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
+              <a onClick={() => this.poll()/*this.props.doHint('enforcementApp')*/} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
             </h2>
           </div>
           <div className="row centered">
             <div className="twelve wide column">
               <div className={`ui input`} style={{ width: "90%" }}>
-                <input type="text" className="readOnly" value={this.state.message} onChange={() => { }}></input>
+                <input type="text" className="readOnly" style={{backgroundColor: "#F0F0F0"}} value={this.state.message} onChange={() => { }}></input>
               </div>
               <a onClick={() => this.props.doHint('enforcementApp')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>
             </div>
@@ -142,14 +170,14 @@ class OfficerPanel extends React.Component {
           <div className="row centered">
             <div className="twelve wide column">
               <div className={`ui primary button`} style={{ width: "90%" }} onClick={() => this.admin()}>
-                admin90%
+                periodic admin
               </div>
               <a onClick={() => this.props.doHint('enforcementApp')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>              
             </div>
           </div>
           <div className="row centered">
             <div className="twelve wide column">
-              <textarea rows="10" readOnly style={{ width: "100%", fontFamily: "monospace", fontSize: "x-small" }} value={this.state.log} onChange={() => { }}></textarea>
+              <textarea rows="10" readOnly style={{ width: "100%", fontFamily: "monospace", fontSize: "x-small", backgroundColor: "#F0F0F0" }} value={this.state.log} onChange={() => { }}></textarea>
             </div>
           </div>
         </div>

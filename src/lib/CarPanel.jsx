@@ -45,7 +45,7 @@ class CarPanel extends React.Component {
 
   render() {
     return (
-      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`} style={{ background: "#e6ffe6" }}>
+      <div className={`ui segment ${this.state.loading ? "loading" : ""} black`}>
         <img src="assets/steering.png" style={{top:"5px", left:"5px", width:"50px", position:"absolute",zIndex:"5"}}></img>
         <div className="ui grid">
           <div className="row centered">
@@ -62,13 +62,13 @@ class CarPanel extends React.Component {
                 <div className="ui black label">
                   Car Address
                 </div>
-                <input type='text' value={this.state.carAddress} readOnly ></input>              
+                <input type='text' value={this.state.carAddress} style={{backgroundColor: "#F0F0F0"}} readOnly ></input>              
               </div>
             </div>              
           </div>
           <div className="row centered">
             <div className="column sixteen wide">
-              <div className="ui segment" style={{ background: "#e6ffe6" }}>
+              <div className="ui segment">
                 <CarPanelCheck 
                   carAddress={this.state.carAddress}
                   privateKey={this.state.privateKey}
@@ -81,7 +81,7 @@ class CarPanel extends React.Component {
           </div>
           <div className="row centered">
             <div className="column sixteen wide">
-              <div className="ui segment" style={{ background: "#e6ffe6" }}>
+              <div className="ui segment">
                 <CarPanelTopUp
                   carAddress={this.state.carAddress}
                   privateKey={this.state.privateKey}

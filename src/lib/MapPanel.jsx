@@ -25,6 +25,12 @@ class MapPanel extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ 
+      enforcementLeft: nextProps.enforcementCoordsX ? nextProps.enforcementCoordsX : this.state.enforcementLeft,
+      enforcementTop: nextProps.enforcementCoordsY ? nextProps.enforcementCoordsY : this.state.enforcementTop
+    });
+  }
   checkAndSetAtCar = () => {
     this.props.atCarSetterFn(this.state.carLeft == this.state.hunterLeft && this.state.carTop == this.state.hunterTop);
   }
@@ -39,8 +45,7 @@ class MapPanel extends React.Component {
     if (this.state.carZone) {
       this.setState({ hunterLeft: this.state.carLeft, hunterTop: this.state.carTop });
     }
-    this.props.hunterCoordsSetterFn(this.state.carLeft, this.state.carTop);
-    this.props.hunterZoneSetterFn(this.state.carZone);
+    this.props.hunterCoordsSetterFn(this.state.carLeft, this.state.carTop, this.state.carZone);
     setTimeout(this.checkAndSetAtCar, 2100);
   }
 

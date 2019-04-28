@@ -45,7 +45,7 @@ class CarPanelCheck extends React.Component {
       if (response.status == 200) {
         return response.json()
       } else {
-        return result.text().then(error => {throw error});
+        return response.text().then(error => {throw error});
       }
     })
     .then(response => {

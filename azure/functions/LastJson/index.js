@@ -16,6 +16,6 @@ module.exports = async function (context, req) {
             },
             body: fs.existsSync('./last.json') ? JSON.parse(fs.readFileSync('./last.json')) : {}
         };
-        fs.unlink('./last.json')
+        fs.unlink('./last.json', (err) => {})
     }
 };

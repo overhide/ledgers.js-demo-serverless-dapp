@@ -199,7 +199,7 @@ class CarPanelTopUp extends React.Component {
         this.props.setLoading(false);
         if (this.props.checkTimeRemaining) this.props.checkTimeRemaining();
       } else {
-        return result.text().then(error => {throw error});
+        return response.text().then(error => {throw error});
       }
     })
     .catch(error => { 
