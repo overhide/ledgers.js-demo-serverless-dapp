@@ -28,7 +28,7 @@ class OfficerPanel extends React.Component {
   }
 
   componentDidMount() {
-    //setInterval(this.poll, 5000); // poll for events every 5 seconds
+    setInterval(this.poll, 5000); // poll for events every 5 seconds
   }
 
   /**
@@ -102,7 +102,7 @@ class OfficerPanel extends React.Component {
         if (isDispatchGood) {
           this.log('\n+--------------+\n| CAR TICKETED |\n+--------------+\n');
         } else {
-          this.log('\n+--------------------------------+\n| CAR NOT RIGHT, STAKE GARNISHED |\n+--------------------------------+\n');
+          this.log('\n+-----------------------------------+\n| INCORRECT REPORT, STAKE GARNISHED |\n+-----------------------------------+\n');
         }
         
       } catch (e) {
@@ -156,7 +156,7 @@ class OfficerPanel extends React.Component {
               <div className="content">
                 <i>Enforcement App</i>
               </div>
-              <a onClick={() => this.poll()/*this.props.doHint('enforcementApp')*/} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
+              <a onClick={() => this.props.doHint('enforcementApp')} style={{cursor: "pointer", marginLeft: "10px"}}><i className="info circle icon"></i></a>
             </h2>
           </div>
           <div className="row centered">

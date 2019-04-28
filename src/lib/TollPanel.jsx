@@ -57,6 +57,7 @@ class TollPanel extends React.Component {
           .send({from: currentAddress, value: stake})
         .on('confirmation', (confirmationNumber, receipt) => {
           if (confirmationNumber == 1) {
+            this.log('\n+--------------+\n| CAR REPORTED |\n+--------------+\n');
             this.log(`car ${addressForLog} reported @ (${this.props.hunterCoordsX},${this.props.hunterCoordsY})`);
           }
           resolve();

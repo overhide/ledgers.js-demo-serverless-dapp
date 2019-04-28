@@ -73,7 +73,7 @@ class MapPanel extends React.Component {
         </img>
         <img src="assets/policecar.png" style={{ 
           position: "absolute", 
-          zIndex: "7",
+          zIndex: "6",
           WebkitTransition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
           transition: `left ${config.animationTimeSeconds}s ease-in-out, top ${config.animationTimeSeconds}s ease-in-out`,
           top: `${this.state.enforcementTop}px`, 
