@@ -89,7 +89,7 @@ class App extends React.Component {
       var error = (
         <div className="ui icon red message">
           <i className="exclamation circle icon"></i>
-          <i aria-hidden="true" className="close icon" style={{marginRight: "20px"}} onClick={(event) => this.setState({ error: null })}></i>
+          <i aria-hidden="true" className="close icon" onClick={(event) => this.setState({ error: null })}></i>
           <div className="content">
             <div className="header">
               <h5>{this.state.error}</h5>
@@ -103,7 +103,7 @@ class App extends React.Component {
       var hint = (
         <div className="ui icon blue message">
           <i className="info circle icon"></i>
-          <i aria-hidden="true" className="close icon" style={{ marginRight: "20px" }} onClick={(event) => this.setState({ hint: null })}></i>
+          <i aria-hidden="true" className="close icon" onClick={(event) => this.setState({ hint: null })}></i>
           <div className="content">
             <div className="header">
               <h5>{this.state.hint}</h5>

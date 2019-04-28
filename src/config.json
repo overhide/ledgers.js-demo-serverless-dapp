@@ -10,18 +10,20 @@
   "reconcile__AzureURL": "https://prod-47.eastus.logic.azure.com:443/workflows/cb8865e2821c4d3c8df38153036a7778/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=1jsXMmDMbB0zGFTjRTOSLmqcDIRZolTULifGyTxIxRM",
   "animationTimeSeconds": 2,
   "hints": {
-    "carApp": "car generated!",
-    "carAppTimeRemaining": "",
-    "carAppButtons": "",
+    "carApp": "This is the 'Car Top-Up App': an app in the car's dashboard or the driver's phone (coupled with the car).  Before setting out into the city, make sure to pay the toll fee for the desired destination zone.  The app uses overhide remuneration APIs for payments and Azure for time top-up registration with the Ethereum contract--as such this app is not decentralized and is funneled through the city's Traffic Authority.",
+    "carAppTimeRemaining": "Shows remaining time until enumerated zone toll permits expire.",
+    "carAppButtons": "Choose to top-up toll fees with easy zone-specific priced buttons.  Driver can choose to use either dollars or ethers.  Payment uses overhide's 'ledgers.js' library.  Payment verification is done inside Azure before submitting top-up to the Ethereum contract.",
     "topupWalletSign": "Please be patient, this can take a while: signing for the car's address using 'ledgers.js' overhide library.",
     "topupWalletPay": "Please be patient, this can take a while: paying top-up fee using 'ledgers.js' overhide library.",
     "topupWalletConsistent": "Please be patient, this can take a while: waiting for decentralized payment node consistency.",
     "topupWalletAzure": "Please be patient, this can take a while.  Calling 'toll-enforce-topup' Azure Logic App:  calls 'topup' in Ethereum contract.",
     "checkTimeAzure": "Please be patient, this can take a while.  Calling 'toll-enforce-check' Azure Logic App:  calls 'getZone*Timeout' in Ethereum contract.",
-    "tollApp": "welcome toll app",
-    "tollAppReportButton": "",
+    "tollApp": "This is a decentralized app used by all of the city's citizens making them into toll enforcement bounty hunters.  These citizen bounty hunters roam the city checking cars.  Successful reports are rewarded by the Traffic Authority.  Each bounty is staked by the bounty hunters to prevent abuse.  Actual enforcement is done by the Traffic Authority.",
+    "tollAppReportButton": "The 'check and report' button becomes active when in vicinity of a car.  A citizen bounty hunter presses the button to quickly check and report a car they think is going to remain in the location spotted long enough for the city Traffic Authority enforcement to arrive and ticket.",
     "tollAppDoReport": "Please be patient, this can take a while.  Calling 'doReport' in Ethereum smart-contract using web3.js direct (no Azure).  Check wallet to confirm.",
-    "enforcementApp": "",
+    "enforcementApp": "This app automates enforcement.  It checks for reports and dispatches enforcement officers.  The enforcement officer has no wiggle room for abuse and mis-ticketing: a ticket is only valid if logged in Ethereum.  A ticket can only be logged as per the contract.",
+    "enforcementAppAdminButton": "Periodically an admin process is ran to keep the Ethereum contract tidy.  Running periodic admin also reimburses citizen bounty hunter stakes on expired reports--reports which were not verified by the city Traffic Authority before expiration.",
+    "enforcementAppWorkflow": "This workflow is fully automated through Ethereum events and Azure.  The Traffic Authority officer can be a trustless robot.",
     "enforcementAppAdmin": "Please be patient, this can take a while.  Calling 'toll-enforce-admin' Azure Logic App:  calls 'purgeCars' and 'expireReports' in Ethereum contract."
   }
 }

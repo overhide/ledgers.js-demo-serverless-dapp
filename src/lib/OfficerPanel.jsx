@@ -164,7 +164,7 @@ class OfficerPanel extends React.Component {
               <div className={`ui input`} style={{ width: "90%" }}>
                 <input type="text" className="readOnly" style={{backgroundColor: "#F0F0F0"}} value={this.state.message} onChange={() => { }}></input>
               </div>
-              <a onClick={() => this.props.doHint('enforcementApp')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>
+              <a onClick={() => this.props.doHint('enforcementAppWorkflow')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>
             </div>
           </div>
           <div className="row centered">
@@ -172,7 +172,7 @@ class OfficerPanel extends React.Component {
               <div className={`ui primary button`} style={{ width: "90%" }} onClick={() => this.admin()}>
                 periodic admin
               </div>
-              <a onClick={() => this.props.doHint('enforcementApp')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>              
+              <a onClick={() => this.props.doHint('enforcementAppAdminButton')} style={{ cursor: "pointer", marginLeft: "5px", float: "right" }}><i className="info circle icon"></i></a>              
             </div>
           </div>
           <div className="row centered">
