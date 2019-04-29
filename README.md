@@ -10,6 +10,18 @@
 > * [Ethereum contract](contract)
 > * [overhide.io](https://overhide.io) (used for payment)
 
+> **Quick Start**
+>
+> 1. visit [demo app](https://jakubner.github.io/bc-community-samples/toll-device-app/dist/index.html)
+>
+> *OR*
+>
+> 1. sync
+> 1. `npm install`
+> 1. `npm run build`
+> 1. `npm run serve`
+> 1. open *http://localhost:8080* with browser (or whatever port is indicated on command line)
+
 ## Introduction
 
 This demo app was created as a submission to the Ethereal Hackathon (2019):
@@ -28,7 +40,7 @@ This is a demo of several things:
     * smart-contract used by many anonymous entities
         * cars 
         * citizen bounty hunters
-1. leveraging Microsoft's [Azure](https://azure.microsoft.com/en-us/) "serverless" backend with [overhide's](https://overhide.io) [remuneration APIs]()
+1. leveraging Microsoft's [Azure](https://azure.microsoft.com/en-us/) "serverless" backend with [overhide's](https://overhide.io) [remuneration APIs](https://www.npmjs.com/package/ledgers.js#3-ecosystem)
     * no need to write own backend code
     * multi-currency support: fiat and crypto
 
@@ -36,7 +48,7 @@ This is a demo of several things:
 
 The usual example of vehicle toll payments we see (at least in North America) is a fee levied for distance-based linear segments of major highways, bridges, tunnels.  These are easy infrastructure components to monetize in a centralized fashion as vehicles are funneled in, out, and gated.
 
-I set out to innovate on the idea of toll-collection using decentralization and to not limit the solution to infrastructure that cen be easily gated.
+I set out to innovate on the idea of toll-collection using decentralization and to not limit the solution to infrastructure that can be easily gated.
 
 Consider a city that wants to levy a toll fee on car access to certain zones in the city.  It's not feasible to funnel cars within a city: this is not how our cities are built and connected.  
 
@@ -46,7 +58,7 @@ Consider our grand city below.  The city has three zones:
 
 * Zone A: downtown (destination: city hall)
 * Zone B: midtown (destinations: hospital, library, office)
-* Zone C: uptown (destinations: schoo, factory)
+* Zone C: uptown (destinations: school, factory)
 * not zoned: suburbs
 
 ![](docs/city.png)
@@ -82,7 +94,7 @@ With respect to *the car* (driver) the system:
     * needs to be controlled from inside of car but available to the outside
     * car's Ethereum address not tied to the city or any authority: not registered
 * expects that while the car is in a "toll" zone; the displayed Ethereum address has a valid permit in the city's Ethereum smart-contract 
-    * a valid paid-permit being a non-expired entry from the car's furnished Ethereum address
+    * a valid paid-permit being a non-expired contract entry for the car's Ethereum address
     * each permit has a limited validity time-period
     * a permit is not a payment--just an expiry timestamp with metadata--no Ethereum based value transfer
 * expects that a valid permit is topped-up via dollars, ethers, or any other form of payment
@@ -111,7 +123,7 @@ With respect to *the citizen bounty hunter* the system:
 With respect to *the Traffic Authority* the system:
 
 * provides easy onboarding and deployment
-    * a new Ethereum contract can be provisioned for a new city [via a Microsoft form](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u)
+    * a new Ethereum contract can be provisioned for a new city [via Microsoft Forms](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u)
     * same Azure workflows can apply to many different cities
     * Toll Enforcement as a Service (TEaaS)
 * provides inexpensive addition of currencies (Euros, BitCoin, DAI)
@@ -120,15 +132,16 @@ With respect to *the Traffic Authority* the system:
 * expects no collection of personally identifiable information by the city Traffic Authority
     * the city Traffic Authority knows entities paying for toll access (cars/drivers) only as [overhide.io](https://overhide.io) furnished pseudonymous public addresses
         * this, even for dollars:
-        * the [Stripe](https://stripe.com) is the payment gateway storing personally identifiable information
-        * the [overhide.io](https://overhide.io) APIs enable pseudonymous [ledger-based authorizations](https://www.youtube.com/watch?v=moc1P9W0yTk)
-    * the city Traffice Authority doesn't know who the citizen bounty hunters are
+        * [Stripe](https://stripe.com) is the payment gateway storing personally identifiable information
+        * the [overhide.io](https://overhide.io) APIs enable pseudonymous [ledger-based authorizations](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization)
+    * the city Traffic Authority doesn't know who the citizen bounty hunters are
         * Ethereum public addresses
         * stakes and bounties *do* involve value transfer on the Ethereum blockchain
 
 > Notes
 >
 > <sup>1</sup> the demo in this repo has a hardcoded fees-schedule configuration for dollars and ethers in three payment zones; this demo wasn't written in a generic way to require "no code adjustments"
+>
 > <sup>2</sup> as of this writing only dollars and ethers are abstracted via overhide's [remuneration APIs](https://www.npmjs.com/package/ledgers.js#3-ecosystem), additional currencies would require authoring and standing up implementation of the APIs for those currencies; it's just two endpoints (see [sample swagger](https://rinkeby.ethereum.overhide.io/swagger.html))
 
 ## Benefits
@@ -137,11 +150,15 @@ With respect to *the Traffic Authority* the system:
 
 The city traffic authority works with their trusted secure workflows on Azure.  They keep their costs down by not implementing and running their own backend infrastructure.  The city can contract out for software development work focused on the functionality and not plumbing.
 
-The Azure backend is a perfect place to validate toll top-up payments.  Since the city accepts multiple currencies from toll-payers (via *zone topup app*), the top-up payments are not value-transfers within the system's Ethereum contract.  The city keeps implementation, data-management, and liability costs down by leveraging [ledger-based authorizations]((https://www.youtube.com/watch?v=moc1P9W0yTk)) with Azure as the backend.
+The Azure backend is a perfect place to validate toll top-up payments.  Since the city accepts multiple currencies from toll-payers (via *zone topup app*), the top-up payments are not value-transfers within the system's Ethereum contract.  The city keeps implementation, data-management, and liability costs down by leveraging [ledger-based authorizations](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization) with Azure as the backend.
 
 The city further saves on enforcement.  The enforcement officers' job is highly automated through the Ethereum contract event log.  The audit trail left by the Ethereum evnet log keeps toll violator litigation costs down to a minimum.
 
 The drivers benefit by not having to register their cars--having to deal with any bureaucracy.  Both locals and out-of-town tourists can just as quickly onboard with the *zone topup app* and drive in.  No special hardware for the drivers to acquire--no transponders or costly or fickle GPS trackers--just a QR code in the right spot behind the windshield.  Flexibility of payment (for tolls) furthers the city's mission to be accessible to all.
+
+> NOTE:
+>
+> Not displaying a QR would be equivalent to not having a license plate: a much larger and riskier transgression.
 
 The car's location is not easily trackable with the toll-system.  The driver's identity is not trackable with the toll-system.  The toll-system is focused on tolls and cannot be accused otherwise and displease privacy advocates.  
 
@@ -155,8 +172,6 @@ Leveraging Ethereum means the bounty hunting *booth app* ecosystem is completely
 
 None of the participants know each other.  Everyone is pseudonymous.  But everything is auditable.  The drivers are just a public address to the city.  The citizen bounty hunters are just a public address to the drivers and the city.
 
-demonstrates how Azure can be leveraged by app developers who do not want to be in the business of managing people, writing backends (leverage Azure), but still want to get paid in cryptos or dollars
-
 ## Simulation / Demo
 
 > NOTE:
@@ -167,7 +182,7 @@ demonstrates how Azure can be leveraged by app developers who do not want to be 
 
 To run the demo you can either:
 
-* visit [these forked GitHub pages](https://jakubner.github.io/bc-community-samples/toll-device-app/dist/index.html)
+* visit [this forked GitHub page](https://jakubner.github.io/bc-community-samples/toll-device-app/dist/index.html)
 * build and run yourself:
     * sync repo
     * `npm run install`
@@ -179,7 +194,11 @@ The demo simulates three "apps" and the interaction between cars (drivers), citi
 
 ![](docs/screenshot.png)
 
-The *Car Top-Up App* shows the Ethereum address of the car on the map.  Refreshing the browser will recycle the address.  This app has the Ethereum private-key for this address, since it simulates the car owning this address.  The driver uses this app to pay toll fees for their destination zone for some some time.  For this simulation the toll fees expire after two minutes.  The toll fee expiration timestamp is shown in the app.  
+The *Car Top-Up App* shows the Ethereum address of the car on the map.  Refreshing the browser will recycle the address.  This app has the Ethereum private-key for this address, since it simulates the car owning this address.  
+
+The car's Ethereum address *is not* the same as the Ethereum address used to pay for tolls.  The car's Ethereum address identifies the car to the toll system while tolls are paid with the driver's (your) wallet Ethereum address.  The car's Ethereum address is signed in the app (by the car) and validated in the Azure backend to track tolls paid.
+
+The driver uses this app to pay toll fees for their desired destination zone for some some amount of time.  For this simulation the toll fees expire after two minutes.  The toll fee expiration timestamp is shown in the app.  
 
 Simply choose to pay with dollars or ethers and proceed to pay the toll.  
 
@@ -187,7 +206,7 @@ Simply choose to pay with dollars or ethers and proceed to pay the toll.
 >
 > Paying in dollars uses the test network from the [overhide-ledger](https://test.ohledger.com): which expects use of [Stripe's test credit cards](https://stripe.com/docs/testing#cards).
 >
-> For a test *VISA* simply:
+> When asked for a test *VISA* simply use the following values:
 >
 > * Email: foo@bar.com
 > * Verification Code (if shown): click the little back chevron (<) in the upper-left corner of modal to skip out
@@ -195,13 +214,13 @@ Simply choose to pay with dollars or ethers and proceed to pay the toll.
 > * MM/YY: 02/22 (any future date will do)
 > * CVC: 222 (any number will do)
 
-Once paid up (or not), click on a building in a city to drive to it.
+Once paid up (or not), click on a building in the city (the map) to "drive" to it.
 
-A concerned citizen bounty hunter is roaming the city.  Click the little dude with a top-hat to go to wherever the car is (unless car is back in the suburbs).
+Be aware that a concerned citizen bounty hunter is roaming the city.  Click the little dude with a top-hat to make him run to wherever the car is (unless car is back in the suburbs).
 
-Once the citizen bounty hunter is at the car, you can click the "click and report" button in the *Toll Bounty App*.  Unlike the *Car Top-Up App* which uses Azure APIs (see URLs in [src/config.json](src/config.json)), the *Toll Bounty App* goes straight to the Ethereum Rinkeby testnet as provided by your in-browser wallet.
+Once the citizen bounty hunter is at the car, you can click the "click and report" button in the *Toll Bounty App* to interact with the Ethereum contract.  Unlike the *Car Top-Up App* which uses Azure APIs to talk to Ethereum (see URLs in [src/config.json](src/config.json)), the *Toll Bounty App* goes directly to the Ethereum Rinkeby testnet as provided by your in-browser wallet.
 
-If a bounty hunt was successful--i.e. the car had lapsed toll payment--the *Enforcement App* will indicate a dispatching of the enforcement officer.  This is done through Azure's Ethereum connector and Ethereum events.
+If a bounty hunt was successful--i.e. the car had lapsed toll payment--the last application, the *Enforcement App*, will indicate a dispatching of the enforcement officer.  This is done through Azure's Ethereum connector and Ethereum events.
 
 > NOTE:
 >
@@ -242,35 +261,35 @@ The following figure models the workflows involved in the system:
 
 ## Appendix :: Logic Apps (screenshots)
 
-### toll-enforce-topup
+### [toll-enforce-topup](azure/logic-apps/toll-enforce-topup.json)
 
 ![](docs/toll-enforce-topup.png)
 
-### toll-enforce-new-admin-form-email
+### [toll-enforce-new-admin-form-email](azure/logic-apps/toll-enforce-new-admin-form-email.json)
 
 ![](docs/toll-enforce-new-admin-form-email.png)
 
-### toll-enforce-admin
+### [toll-enforce-admin](azure/logic-apps/toll-enforce-admin.json)
 
 ![](docs/toll-enforce-admin.png)
 
-### toll-enforce-check
+### [toll-enforce-check](azure/logic-apps/toll-enforce-check.json)
 
 ![](docs/toll-enforce-check.png)
 
-### toll-enforce-dispatch
+### [toll-enforce-dispatch](azure/logic-apps/toll-enforce-dispatch.json)
 
 ![](docs/toll-enforce-dispatch.png)
 
-### toll-enforce-get-admin
+### [toll-enforce-get-admin](azure/logic-apps/toll-enforce-get-admin.json)
 
 ![](docs/toll-enforce-get-admin.png)
 
-### toll-enforce-poll
+### [toll-enforce-poll](azure/logic-apps/toll-enforce-poll.json)
 
 ![](docs/toll-enforce-poll.png)
 
-### toll-enforce-reconcile
+### [toll-enforce-reconcile](azure/logic-apps/toll-enforce-reconcile.json)
 
 ![](docs/toll-enforce-reconcile.png)
 
