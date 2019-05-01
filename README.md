@@ -8,7 +8,7 @@
 > * [City onboarding form](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u)
 > * [Azure Logic Apps and Functions](azure)
 > * [Ethereum contract](contract)
-> * [overhide.io](https://overhide.io) (used for payment)
+> * [ledger-based authorizations](#ledger-based-authorizations) (used for payment)
 
 > **Quick Start**
 >
@@ -40,7 +40,7 @@ This is a demo of several things:
     * smart-contract used by many anonymous entities
         * cars 
         * citizen bounty hunters
-1. leveraging Microsoft's [Azure](https://azure.microsoft.com/en-us/) "serverless" backend with [overhide's](https://overhide.io) [remuneration APIs](https://www.npmjs.com/package/ledgers.js#3-ecosystem)
+1. leveraging Microsoft's [Azure](https://azure.microsoft.com/en-us/) "serverless" backend with [ledger-based authorizations](#ledger-based-authorizations)
     * no need to write own backend code
     * multi-currency support: fiat and crypto
 
@@ -74,7 +74,7 @@ Checkpoints (1) can be done centrally by the city using Azure's backend.  Althou
 
 Static traffic (2) within a zone can be toll-checked by anyone; decentralized, incentivized, and pseudonymous. 
 
-### Values
+### System Values (Goals)
 
 The participants in this system are:
 
@@ -93,6 +93,8 @@ With respect to *the car* (driver) the system:
     * alternatively could be some near-field electronic tag on the driver side (picked up by proximity)
     * needs to be controlled from inside of car but available to the outside
     * car's Ethereum address not tied to the city or any authority: not registered
+* expects a SHA256 of the car's license plate or SHA256 of the car's VIN to be passed into the Ethereum contract 
+    * avoids people using the same address for multiple cars
 * expects that while the car is in a "toll" zone; the displayed Ethereum address has a valid permit in the city's Ethereum smart-contract 
     * a valid paid-permit being a non-expired contract entry for the car's Ethereum address
     * each permit has a limited validity time-period
@@ -101,24 +103,24 @@ With respect to *the car* (driver) the system:
     * top-up payments for permits are processed by the city's Azure backend cluster
 * provides enforcement accountability: a means to audit time, location, and existence of transgression reports and tickets
     * built into Ethereum contract
-    * no Ethereum events, no grounds for a ticket
+    * if no Ethereum event logged, no grounds for a ticket
     * Ethereum contract is a vessel for accountability, requires human judgement for resolution
 * provides convenience
     * no need to register with the city: perfect for out-of-town tourists
     * flexibility of toll fee payment currency
 * provides fees payment accountability
     * permits can be checked on Ethereum blockchain
-    * payments can be checked on any ledger supported by [overhide.io](https://overhide.io)
+    * payments can be checked on any ledger provided by [ledger-based-authorizations](#ledger-based-authorizations)
 
 With respect to *the citizen bounty hunter* the system:
 
 * provides pseudonimity
     * they are Ethereum public addresses
-    * stakes and bounties *do* involve value transfer on the Ethereum blockchain
+    * stakes and bounties *do* involve value transfer on the Ethereum blockchain with this contract
 * provides decentralization
     * hunters interact with system outside of the city Traffic Authority's Azure backend
 * expects honesty 
-    * bount hunters do risk a staked amount of ethers when reporting 
+    * bounty hunters do risk a staked amount of ethers when reporting 
 
 With respect to *the Traffic Authority* the system:
 
@@ -127,22 +129,22 @@ With respect to *the Traffic Authority* the system:
     * same Azure workflows can apply to many different cities
     * Toll Enforcement as a Service (TEaaS)
 * provides inexpensive addition of currencies (Euros, BitCoin, DAI)
-    * no code adjustment<sup>1</sup> in the user facing ReactJS apps ([ledgers.js](https://www.npmjs.com/package/ledgers.js))
-    * no code adjustment<sup>1,2</sup> in the Azure backend as abstracted from remuneration using overhide's [remuneration APIs](https://www.npmjs.com/package/ledgers.js#3-ecosystem)
+    * no code adjustment<sup>1</sup> in the user facing ReactJS apps (see [ledger-based authorizations](#ledger-based-authorizations))
+    * no code adjustment<sup>1,2</sup> in the Azure backend as abstracted from remuneration using [ledger-based authorizations](#ledger-based-authorizations)
 * expects no collection of personally identifiable information by the city Traffic Authority
-    * the city Traffic Authority knows entities paying for toll access (cars/drivers) only as [overhide.io](https://overhide.io) furnished pseudonymous public addresses
+    * the city Traffic Authority knows entities paying for toll access (cars/drivers) only as [ledger-based authorizations](#ledger-based-authorizations) furnished pseudonymous public addresses
         * this, even for dollars:
         * [Stripe](https://stripe.com) is the payment gateway storing personally identifiable information
-        * the [overhide.io](https://overhide.io) APIs enable pseudonymous [ledger-based authorizations](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization)
+        * the APIs enable pseudonymous [ledger-based authorizations](#ledger-based-authorizations)
     * the city Traffic Authority doesn't know who the citizen bounty hunters are
         * Ethereum public addresses
         * stakes and bounties *do* involve value transfer on the Ethereum blockchain
 
 > Notes
 >
-> <sup>1</sup> the demo in this repo has a hardcoded fees-schedule configuration for dollars and ethers in three payment zones; this demo wasn't written in a generic way to require "no code adjustments"
+> <sup>1</sup> the demo in this repo makes assumptions regarding the fees-schedule having configuration for dollars and ethers in three payment zones; for readability, this demo's fees-schedule parsing wasn't implemented in a generic way to require "no code adjustments"
 >
-> <sup>2</sup> as of this writing only dollars and ethers are abstracted via overhide's [remuneration APIs](https://www.npmjs.com/package/ledgers.js#3-ecosystem), additional currencies would require authoring and standing up implementation of the APIs for those currencies; it's just two endpoints (see [sample swagger](https://rinkeby.ethereum.overhide.io/swagger.html))
+> <sup>2</sup> as of this writing only dollars and ethers are abstracted via [ledger-based authorizations](#ledger-based-authorizations), additional currencies can be easily added
 
 ## Benefits
 
@@ -150,15 +152,19 @@ With respect to *the Traffic Authority* the system:
 
 The city traffic authority works with their trusted secure workflows on Azure.  They keep their costs down by not implementing and running their own backend infrastructure.  The city can contract out for software development work focused on the functionality and not plumbing.
 
-The Azure backend is a perfect place to validate toll top-up payments.  Since the city accepts multiple currencies from toll-payers (via *zone topup app*), the top-up payments are not value-transfers within the system's Ethereum contract.  The city keeps implementation, data-management, and liability costs down by leveraging [ledger-based authorizations](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization) with Azure as the backend.
+The Azure backend is a perfect place to validate toll top-up payments.  Since the city accepts multiple currencies from toll-payers (via *zone topup app*), the top-up payments are not value-transfers within the system's Ethereum contract.  The city keeps implementation, data-management, and liability costs down by leveraging [ledger-based authorizations](#ledger-based-authorizations) with Azure as the backend.
 
 The city further saves on enforcement.  The enforcement officers' job is highly automated through the Ethereum contract event log.  The audit trail left by the Ethereum evnet log keeps toll violator litigation costs down to a minimum.
 
-The drivers benefit by not having to register their cars--having to deal with any bureaucracy.  Both locals and out-of-town tourists can just as quickly onboard with the *zone topup app* and drive in.  No special hardware for the drivers to acquire--no transponders or costly or fickle GPS trackers--just a QR code in the right spot behind the windshield.  Flexibility of payment (for tolls) furthers the city's mission to be accessible to all.
+The drivers benefit by not having to register their cars--having to deal with any bureaucracy.  Both locals and out-of-town tourists can just as quickly onboard with the *zone topup app* and drive in.  No special hardware for the drivers to acquire--no transponders or costly and fickle GPS trackers--just a QR code in the right spot behind the windshield.  Flexibility of payment (for tolls) furthers the city's mission to be accessible to all.
 
 > NOTE:
 >
-> Not displaying a QR would be equivalent to not having a license plate: a much larger and riskier transgression.
+> Cars not having a public Ethereum address (displaying a QR code) would be equivalent to not having a license plate: a costlier and riskier transgression.
+>
+> Cars having a paid-for valid public Ethereum address in the contract; but the address having a mismatched SHA256 of the license plate or a mismatched SHA256 of VIN, would be equivalent to not having a license plate.  This amounts to fraud (criminal offence).
+>
+> Reporting of non-address bearing cars would be an extension of the workflows discussed here.  For simplicity, such an extention is out of scope for this developer demo.
 
 The car's location is not easily trackable with the toll-system.  The driver's identity is not trackable with the toll-system.  The toll-system is focused on tolls and cannot be accused otherwise and displease privacy advocates.  
 
@@ -228,7 +234,7 @@ If a bounty hunt was successful--i.e. the car had lapsed toll payment--the last 
 
 Beside a race condition in this simplistic dispatching mechanism, another way to avoid a ticket for violating toll-payment is to click another destination in the city and run away before the enforcement officer arrives.
 
-Note that if the car runs away from a location before the enforcement officer arrives, not only does the citizen bounty hunter miss out on the reward from the ticket, the bounty hunter gives up their staked ethers for their mis-reporting: bounty hunters stake some ether when reporting a car.  As such, the citizen bounty hunter must be somewhat confident the car will stay where it is for some time.  The time is not unbounded; it's 30 seconds in the simulation.  In the real world this would be location dependent, but enforcement officers on bike or foot should be able to get to reports on the order of minutes and ticket cars in a matter of seconds ().
+Note that if the car runs away from a location before the enforcement officer arrives, not only does the citizen bounty hunter miss out on the reward from the ticket, the bounty hunter gives up their staked ethers for their mis-reporting: bounty hunters stake some ether when reporting a car.  As such, the citizen bounty hunter must be somewhat confident the car will stay where it is for some time.  The time is not unbounded; it's 30 seconds in the simulation.  In the real world this would be location dependent, but enforcement officers on bike or foot should be able to get to reports on the order of minutes and ticket cars in a matter of seconds.
 
 ## Implementation
 
@@ -244,7 +250,7 @@ The Ethereum contract bringing everything together is in [contract/](contract).
 
 The contract is instantiated by the [azure/logic-apps/toll-enforce-new-admin-form-email.json](azure/logic-apps/toll-enforce-new-admin-form-email.json) Logic App.  There is a [Microsoft Form](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u) which--when ran, re-deploys the contract and configures all new fees schedules for the city.  The details of the new fees schedule and the new Ethereum contract instance address are emailed to the email address specified in the [Microsoft Form](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u).
 
-The configuration points emailed above need to be put into [src/config.json](src/config.json) to take effect:
+The configuration points emailed (as per above) need to be transcribed into [src/config.json](src/config.json) to take effect:
 
 * *admin__FormId*
 * *ethereumContractAddress*
@@ -253,11 +259,49 @@ As such, many different "demo" cities can use the same setup to run the toll col
 
 > NOTE:
 >
-> Running through the form yourself will not interfere with deployed demo:  it's already running as per current deployment: idempotent.
+> Running through the form yourself will not interfere with the deployed demo:  it's already running as per current deployment.
 
 The following figure models the workflows involved in the system:
 
 ![](docs/flows.png)
+
+## Ledger-Based Authorizations
+
+This demo uses the [ledger-based authorizations](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization) concept for currency agnostic toll fee payments: dollars and ethers.
+
+*Ledger-based authorization* is a very simple concept where fiat and crypto payments are available on a pseudonymous public ledger with each participant being able to prove ownership of their entry on this ledger (crypto PKI).  More literature on the subject:
+
+* [quick summary](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization)
+* [detailed write-up](https://medium.com/@jakub.ner/introduction-to-overhide-ledger-and-motivation-for-why-its-useful-f9c987f2205f?source=friends_link&sk=18f6e8a90efbbc4ac28df50ab50833de)
+* [video introduction](https://www.youtube.com/watch?v=moc1P9W0yTk)
+
+Using the [overhide remuneration API](https://rinkeby.ethereum.overhide.io/swagger.html) in a backend and the [ledgers.js](https://www.npmjs.com/package/ledgers.js) library in a login-page a developer can provide authorization into different tiers of access with multiple currencies--hedging against new currencies with these abstractions.  Future-proof code need only be written once.  The relationship between the *API* and [ledgers.js](https://www.npmjs.com/package/ledgers.js) is summarized in the [quick summary write-up](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#the-remuneration-api-and-ledgersjs)
+
+### Azure Serverless Backend
+
+In this demo we used the Azure serverless backend (Azure Logic Apps) to allow toll payment in multiple currencies.  The backend implementation to verify the payment--regardless of currency--are two simple HTTP calls in the [toll-enforce-topup](azure/logic-apps/toll-enforce-topup.json) Logic App.
+
+![](docs/remuneration.png)
+
+The currency specific components in the above flow deal with the unit conversion from the human-readable [fees-schedule](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u) (dollars and ethers) to the denomination that the API deals with (cents and wei).
+
+The two API calls are identical, they just go against different remuneration provider URLs; as [configured with the fees-schedule](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u).
+
+The two API calls on Ethereum's Rinkeby testnet:  https://rinkeby.ethereum.overhide.io/swagger.html.
+
+The two API calls on [overhide-ledger's](https://test.ohledger.com) test instance:  https://test.ohledger.com/swagger.html.
+
+### Login Page
+
+The *Car Top-Up App* is the login page.  The actual topup component fully resides in the [src/lib/CarPanelTopUp.jsx](src/lib/CarPanelTopUp.jsx) React component.
+
+This component's use of the `oh$` import from [ledgers.js](https://www.npmjs.com/package/ledgers.js) are all the integration points for presenting *ledger-based authorizations* to the user.
+
+A quick overview of the login-page [ledgers.js](https://www.npmjs.com/package/ledgers.js) is available in [this video](https://www.youtube.com/watch?v=-uI806gNnFg).
+
+### Read More
+
+Please visit [overhide.io](https://overhide.io) and [overhide-ledger](https://ohledger.com) for more.
 
 ## Appendix :: Logic Apps (screenshots)
 
