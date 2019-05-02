@@ -116,22 +116,34 @@ class App extends React.Component {
     // main UI
     return (
       <div>
+
+        <div style={{ position: "absolute", display: "flex", flexDirection: "column", fontSize: "large", fontFamily: "cursive", marginLeft:"10px" }}>
+          <a href="https://github.com/JakubNer/bc-community-samples/tree/toll-device-app/toll-device-app" style={{ display: "flex", alignItems: "center" }}>
+            <img src="assets/icons8-github-96.png" style={{ width: "48px" }}></img><span style={{ marginLeft: "10px" }}>README</span>
+          </a>
+          <a href="https://youtu.be/oLJsU3aSCP4" style={{ display: "flex", alignItems: "center" }}>
+            <img src="assets/icons8-play-button-96.png" style={{ width: "48px" }}></img><span style={{ marginLeft: "10px" }}>WATCH</span>
+          </a>
+        </div>
+
         <div className="ui center aligned grid" style={{marginTop:"20px", maxWidth: "1700px", marginRight: "auto", marginLeft: "auto"}}>
           {/* dimmer for whole page */}
           <div className={`ui ${this.state.loading ? "active" : ""} dimmer`}>
             <div className="ui loader"></div>
           </div>
-          <div style={{position: "absolute", top: "5px", left: "10%", width: "90%", zIndex: "110", opacity: "0.8"}}>
+          <div style={{position: "absolute", top: "5px", left: "10%", width: "80%", zIndex: "110", opacity: "0.8"}}>
             {/* error banner for whole page */}
             {error}
             {/* hint banner */}
             {hint}
             {/* payment component */}
           </div>
+
           <div className="ui grid">
-            <div className="row" style={{height: "30px"}}>
+            <div className="row" style={{height: "50px"}}>
             </div>
             <div className="three column row">
+
               <div className="column" style={{minWidth: "550px", maxWidth: "550px", marginBottom: "20px", marginTop: "65px"}}>
                 <div style={{ minWidth: "420px", maxWidth: "420px", margin: "auto" }}>
                   <CarPanel
