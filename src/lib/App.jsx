@@ -118,10 +118,10 @@ class App extends React.Component {
       <div>
 
         <div style={{ position: "absolute", display: "flex", flexDirection: "column", fontSize: "large", fontFamily: "cursive", marginLeft:"10px" }}>
-          <a href="https://github.com/JakubNer/bc-community-samples/tree/toll-device-app/toll-device-app" style={{ display: "flex", alignItems: "center" }}>
+          <a href="https://github.com/JakubNer/bc-community-samples/tree/toll-device-app/toll-device-app" target="_blank" style={{ display: "flex", alignItems: "center" }}>
             <img src="assets/icons8-github-96.png" style={{ width: "48px" }}></img><span style={{ marginLeft: "10px" }}>README</span>
           </a>
-          <a href="https://youtu.be/oLJsU3aSCP4" style={{ display: "flex", alignItems: "center" }}>
+          <a href="https://youtu.be/oLJsU3aSCP4" target="_blank" style={{ display: "flex", alignItems: "center" }}>
             <img src="assets/icons8-play-button-96.png" style={{ width: "48px" }}></img><span style={{ marginLeft: "10px" }}>WATCH</span>
           </a>
         </div>
