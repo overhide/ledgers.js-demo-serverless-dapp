@@ -15,7 +15,7 @@ class App extends React.Component {
     this.state = {
       error: null,
       loading: true, // as fetching admin first
-      hint: null,
+      hint: "Please ensure you're using the RINKEBY testnet with your web3.js wallet.",
       atCar: false,
       carAddress: null,
       plateHash: null,
@@ -28,7 +28,6 @@ class App extends React.Component {
       hunterCoordsY: null,
       hunterCoordsZone: null
     };
-
     this.fetchAdmin();
   }
 
