@@ -5,10 +5,9 @@
 > Please do read through the rest of this write-up to understand what's behind these links.
 >
 > * [ReactJS demo app (off of this repo's "pages")](https://overhide.github.io/ledgers.js-demo-serverless-dapp/dist/index.html)
-> * [City onboarding form](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u)
-> * [Azure Logic Apps and Functions](azure)
-> * [Ethereum contract](contract)
 > * [ledger-based authorizations](#ledger-based-authorizations) (used for payment)
+> * [Ethereum contract](contract)
+> * [Azure Logic Apps and Functions](azure)
 
 > **Quick Start**
 >
@@ -33,6 +32,9 @@ The demo app aims to "...simulate a toll payment for an automobile [using Azure 
 
 This is a demo of several things:
 
+1. leveraging Microsoft's [Azure](https://azure.microsoft.com/en-us/) "serverless" backend with [ledger-based authorizations](#ledger-based-authorizations)
+    * no need to write own backend code
+    * multi-currency support: fiat and crypto
 1. leveraging Microsoft's [Azure](https://azure.microsoft.com/en-us/) "serverless" for [Ethereum smart-contract interaction](https://docs.microsoft.com/en-us/connectors/blockchainethereum/)
     * smart-contract deployment via [Azure](https://azure.microsoft.com/en-us/) 
     * Azure Logic Apps and Functions with trusted off-chain functionality supporting the smart-contract
@@ -40,9 +42,6 @@ This is a demo of several things:
     * smart-contract used by many anonymous entities
         * cars 
         * citizen bounty hunters
-1. leveraging Microsoft's [Azure](https://azure.microsoft.com/en-us/) "serverless" backend with [ledger-based authorizations](#ledger-based-authorizations)
-    * no need to write own backend code
-    * multi-currency support: fiat and crypto
 
 ## Background & Motivation
 
