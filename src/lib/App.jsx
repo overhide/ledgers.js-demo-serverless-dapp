@@ -123,7 +123,7 @@ class App extends React.Component {
     // show footnote
     if (this.state.footnote) {
       var footnote = (
-        <div className="ui positive message" style={{marginTop: "30px", marginBottom: "30px"}}>
+        <div className="ui positive message" style={{marginTop: "30px", marginBottom: "30px", width: "80%"}}>
           <i aria-hidden="true" className="close icon" onClick={(event) => this.setState({ footnote: null })}></i>
           <div className="content">
             <div className="header" style={{textAlign: "center"}}>Background Info</div>
@@ -142,7 +142,7 @@ class App extends React.Component {
     return (
       <div>
 
-        <div style={{ position: "absolute", display: "flex", flexDirection: "column", fontSize: "large", fontFamily: "cursive", marginLeft:"10px" }}>
+        <div style={{ position: "absolute", display: "flex", flexDirection: "column", fontSize: "large", fontFamily: "cursive", marginLeft:"10px", zIndex: "1" }}>
           <a href="https://github.com/overhide/ledgers.js-demo-serverless-dapp" target="_blank" style={{ display: "flex", alignItems: "center" }}>
             <img src="assets/icons8-github-96.png" style={{ width: "48px" }}></img><span style={{ marginLeft: "10px" }}>README</span>
           </a>
