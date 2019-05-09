@@ -1,5 +1,5 @@
 import config from "../config.json";
-import {getAdmin} from "./utils";
+import {getAdmin, delay} from "./utils";
 
 import React from "react";
 import CarPanel from "./CarPanel";
@@ -26,7 +26,8 @@ class App extends React.Component {
       enforcementCoordsY: null,
       hunterCoordsX: null,
       hunterCoordsY: null,
-      hunterCoordsZone: null
+      hunterCoordsZone: null,
+      visaHintOpacity: null
     };
     this.fetchAdmin();
   }
@@ -60,6 +61,16 @@ class App extends React.Component {
     } else {
       console.log('clearing hint');
       this.setState({ hint: null });
+    }
+  }
+
+  shouldVisaHintShow = async (yes) => {
+    if (yes) {
+      this.setState({ visaHintOpacity: "0"});
+      await delay(0);
+      this.setState({ visaHintOpacity: "1" });
+    } else {
+      this.setState({ visaHintOpacity: null });
     }
   }
 
@@ -112,12 +123,18 @@ class App extends React.Component {
         </div>
       );
     }
+    // show VISA help
+    if (this.state.visaHintOpacity) {
+      var visaHint = (
+        <img src="assets/visa.png" style={{ position: "absolute", top: "10px", right: "0px", zIndex: "200", opacity: this.state.visaHintOpacity, transition: "opacity 1s ease-in 4s"}}></img>
+      );
+    }
     // main UI
     return (
       <div>
 
         <div style={{ position: "absolute", display: "flex", flexDirection: "column", fontSize: "large", fontFamily: "cursive", marginLeft:"10px" }}>
-          <a href="https://github.com/JakubNer/bc-community-samples/tree/toll-device-app/toll-device-app" target="_blank" style={{ display: "flex", alignItems: "center" }}>
+          <a href="https://github.com/overhide/ledgers.js-demo-serverless-dapp" target="_blank" style={{ display: "flex", alignItems: "center" }}>
             <img src="assets/icons8-github-96.png" style={{ width: "48px" }}></img><span style={{ marginLeft: "10px" }}>README</span>
           </a>
           <a href="https://youtu.be/oLJsU3aSCP4" target="_blank" style={{ display: "flex", alignItems: "center" }}>
@@ -130,6 +147,8 @@ class App extends React.Component {
           <div className={`ui ${this.state.loading ? "active" : ""} dimmer`}>
             <div className="ui loader"></div>
           </div>
+          {/* VISA hint */}
+          {visaHint}
           <div style={{position: "absolute", top: "5px", left: "10%", width: "80%", zIndex: "110", opacity: "0.8"}}>
             {/* error banner for whole page */}
             {error}
@@ -148,6 +167,7 @@ class App extends React.Component {
                   <CarPanel
                     setError={this.setError}
                     doHint={this.doHint}
+                    shouldVisaHintShow={this.shouldVisaHintShow}
                     carAddressSetterFn={this.setCarAddress} />
                 </div>
               </div>
