@@ -320,9 +320,12 @@ Please visit [overhide.io](https://overhide.io) and [overhide-ledger](https://oh
 
 ![](docs/toll-enforce-check.png)
 
-### [toll-enforce-dispatch](azure/logic-apps/toll-enforce-dispatch.json)
+### [toll-enforce-dispatch-http-triggered](azure/logic-apps/toll-enforce-dispatch-http-triggered.json)
 
 ![](docs/toll-enforce-dispatch.png)
+
+With an Azure Logic App we could poll periodically for new Ethereum events; but that costs money.  Instead we activate polling
+for Ethereum events with an HTTP POST trigger.  The HTTP POST is sent right before the [contract's](contract/contract.sol) *doReport* call is invoked in [src/lib/TollPanel.jsx](src/lib/TollPanel.jsx).  The Ethereum event polling expires after some time.
 
 ### [toll-enforce-get-admin](azure/logic-apps/toll-enforce-get-admin.json)
 

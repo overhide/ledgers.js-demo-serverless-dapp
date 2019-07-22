@@ -48,6 +48,10 @@ class TollPanel extends React.Component {
       this.log('bounty reward value: ' + await contract.methods.rewardValue().call());
       this.log(`calling doReport on car ${addressForLog} @ (${this.props.hunterCoordsX},${this.props.hunterCoordsY})`);
       this.props.doHint('tollAppDoReport');
+      fetch(config.dispatch__AzureURL, { // Trigger Azure to wait for Ethereum event
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+      });
       await new Promise((resolve, reject) => {
         contract.methods.doReport(
           this.props.carAddress, 

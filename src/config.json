@@ -8,6 +8,7 @@
   "admin__AzureURL": "https://prod-55.eastus.logic.azure.com:443/workflows/5620e64c422e491889783131fb0ddac6/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=aPhx4-gIfPUqTDI2XXmvq3ZKxRTWPRoYpzNNHc9xMNM",
   "poll__AzureURL": "https://prod-19.eastus.logic.azure.com/workflows/6e452ad65ad8435396cc15b69c3b87ba/triggers/manual/paths/invoke/atCar/{atCar}?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hwycZeil79HpOKN_lbMmtvGa4XkDyGTZWDdhnwT3KyE",
   "reconcile__AzureURL": "https://prod-47.eastus.logic.azure.com:443/workflows/cb8865e2821c4d3c8df38153036a7778/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=1jsXMmDMbB0zGFTjRTOSLmqcDIRZolTULifGyTxIxRM",
+  "dispatch__AzureURL": "https://prod-89.eastus.logic.azure.com:443/workflows/bc1ce173939f4964a697aa115b8b9e88/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2xYmvN2FqGNJmzeV7uUzVWGm_0q-YkpGUR3XSB-_z28",
   "animationTimeSeconds": 2,
   "hints": {
     "carApp": "This is the 'Car Top-Up App': an app in the car's dashboard or the driver's phone (coupled with the car).  Before setting out into the city, make sure to pay the toll fee for the desired destination zone.  The app uses overhide remuneration APIs for payments and Azure for time top-up registration with the Ethereum contract--as such this app is not decentralized and is funneled through the city's Traffic Authority.",
