@@ -1,5 +1,7 @@
 # Gamified Citizen Toll Enforcement
 
+Please [watch the introductory video](https://www.youtube.com/watch?v=oLJsU3aSCP4&feature=youtu.be).
+
 > **Quick Links**
 >
 > Please do read through the rest of this write-up to understand what's behind these links.
