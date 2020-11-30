@@ -266,15 +266,15 @@ The following figure models the workflows involved in the system:
 
 ## Ledger-Based Authorizations
 
-This demo uses the [ledger-based authorizations](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization) concept for currency agnostic toll fee payments: dollars and ethers.
+This demo uses the [ledger-based authorizations](https://overhide.io/2020/09/06/remuneration-api.html) concept for currency agnostic toll fee payments: dollars and ethers.
 
 *Ledger-based authorization* is a very simple concept where fiat and crypto payments are available on a pseudonymous public ledger with each participant being able to prove ownership of their entry on this ledger (crypto PKI).  More literature on the subject:
 
-* [quick summary](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#ledger-based-authorization)
+* [quick summary](https://overhide.io/2020/09/06/remuneration-api.html)
 * [detailed write-up](https://overhide.io/2019/03/20/why.html)
 * [video introduction](https://www.youtube.com/watch?v=moc1P9W0yTk)
 
-Using the [overhide remuneration API](https://rinkeby.ethereum.overhide.io/swagger.html) in a backend and the [ledgers.js](https://www.npmjs.com/package/ledgers.js) library in a login-page a developer can provide authorization into different tiers of access with multiple currencies--hedging against new currencies with these abstractions.  Future-proof code need only be written once.  The relationship between the *API* and [ledgers.js](https://www.npmjs.com/package/ledgers.js) is summarized in the [quick summary write-up](https://github.com/overhide/overhide/blob/master/docs/remuneration-api.md#the-remuneration-api-and-ledgersjs)
+Using the [overhide remuneration API](https://rinkeby.ethereum.overhide.io/swagger.html) in a backend and the [ledgers.js](https://www.npmjs.com/package/ledgers.js) library in a login-page a developer can provide authorization into different tiers of access with multiple currencies--hedging against new currencies with these abstractions.  Future-proof code need only be written once.  The relationship between the *API* and [ledgers.js](https://www.npmjs.com/package/ledgers.js) is summarized in the [quick summary write-up](https://overhide.io/2020/09/06/remuneration-api.html)
 
 ### Azure Serverless Backend
 
