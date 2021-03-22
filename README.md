@@ -23,6 +23,20 @@ Please [watch the introductory video](https://www.youtube.com/watch?v=oLJsU3aSCP
 > 1. `npm run serve`
 > 1. open *http://localhost:8080* with browser (or whatever port is indicated on command line)
 
+
+
+
+
+------
+
+**This hack serves as a demo of [ledgers.js library](https://www.npmjs.com/package/ledgers.js).  Please see use of `oh$`** in [./src/lib/CarPanelTopUp.jsx](./src/lib/CarPanelTopUp.jsx).
+
+------
+
+
+
+
+
 ## Introduction
 
 This demo app was created as a submission to the Ethereal Hackathon (2019):
@@ -285,6 +299,8 @@ In this demo we used the Azure serverless backend (Azure Logic Apps) to allow to
 ![](docs/remuneration.png)
 
 The currency specific components in the above flow deal with the unit conversion from the human-readable [fees-schedule](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u) (dollars and ethers) to the denomination that the API deals with (cents and wei).
+
+First, before the two *overhide* API calls for authentication and authorization, we retrieve a token (using [GET /token](https://token.overhide.io/swagger.html)) based on an API key we [registered earlier](https://token.overhide.io/register).
 
 The two API calls are identical, they just go against different remuneration provider URLs; as [configured with the fees-schedule](https://forms.office.com/Pages/ResponsePage.aspx?id=3Lt3--vGs02UAOXn9NV_scwAE4PWTPxFg9B_QZcw6HlUODhJNlNKT1VGVElRSlRTMUFCV0NaSDNIMC4u).
 
