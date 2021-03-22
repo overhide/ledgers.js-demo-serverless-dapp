@@ -18,7 +18,7 @@ Please [watch the introductory video](https://www.youtube.com/watch?v=oLJsU3aSCP
 > *OR*
 >
 > 1. sync
-> 1. `npm install`
+> 1. `npm install --no-optional`
 > 1. `npm run build`
 > 1. `npm run serve`
 > 1. open *http://localhost:8080* with browser (or whatever port is indicated on command line)
@@ -211,7 +211,7 @@ Simply choose to pay with dollars or ethers and proceed to pay the toll.
 
 > Dollars Payment
 >
-> Paying in dollars uses the test network from the [overhide-ledger](https://test.ohledger.com): which expects use of [Stripe's test credit cards](https://stripe.com/docs/testing#cards).
+> Paying in dollars uses the test network from the [overhide-ledger](https://test.ledger.overhide.io): which expects use of [Stripe's test credit cards](https://stripe.com/docs/testing#cards).
 >
 > When asked for a test *VISA* simply use the following values:
 >
@@ -290,7 +290,7 @@ The two API calls are identical, they just go against different remuneration pro
 
 The two API calls on Ethereum's Rinkeby testnet:  https://rinkeby.ethereum.overhide.io/swagger.html.
 
-The two API calls on [overhide-ledger's](https://test.ohledger.com) test instance:  https://test.ohledger.com/swagger.html.
+The two API calls on [overhide-ledger's](https://test.ledger.overhide.io) test instance:  https://test.ledger.overhide.io/swagger.html.
 
 ### Login Page
 
@@ -302,7 +302,7 @@ A quick overview of the login-page [ledgers.js](https://www.npmjs.com/package/le
 
 ### Read More
 
-Please visit [overhide.io](https://overhide.io) and [overhide-ledger](https://ohledger.com) for more.
+Please visit [overhide.io](https://overhide.io) and [overhide-ledger](https://ledger.overhide.io) for more.
 
 ## Appendix :: Logic Apps (screenshots)
 

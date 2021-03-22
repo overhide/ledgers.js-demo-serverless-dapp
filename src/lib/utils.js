@@ -1,13 +1,13 @@
 /**
  * Utilities to help with all the other components
  */
-import {Accounts} from 'web3-eth-accounts';
+import Web3 from 'web3';
 import {keccak256} from 'web3-utils';
 import config from "../config.json";
 
 /** initialization **/
 
-let accounts = new Accounts('http://localhost:8545');
+let accounts = (new Web3('http://localhost:8545')).eth.accounts
 
 /**
  * admin - from Azure (promise)
