@@ -39,9 +39,9 @@ class CarPanelTopUp extends React.Component {
      * 
      * Ethers only enabled if wallet, so do everything in 'onWalletChange'
      */
-    oh$.onWalletChange = async (imparterTag, isPresent) => {
-      if (imparterTag == 'eth-web3') {
-        if (isPresent) {
+    oh$.addEventListener('onWalletChange', async (event) => {
+      if (event.imparterTag == 'eth-web3') {
+        if (event.isPresent) {
           let uri = oh$.getOverhideRemunerationAPIUri('eth-web3');
           if (uri != (await getAdmin()).remunerationApiUrl__ethers) {
             this.setState({ ethersEnabled: false, chosenCurrency: this.state.chosenCurrency == 'ethers' ? null : this.state.chosenCurrency }); // wrong testnet
@@ -54,7 +54,7 @@ class CarPanelTopUp extends React.Component {
         }
       }
       // dollars always available, ethers enabled when network detected below
-    };
+    });
 
     /**
      * Determine if dollars should be enabled.  Since we're trying to enable test network right below, we know this will
@@ -62,10 +62,10 @@ class CarPanelTopUp extends React.Component {
      * 
      * No wallet for dollars in this example.
      */
-    oh$.onNetworkChange = async (imparterTag, details) => {
-      switch (imparterTag) {
+    oh$.addEventListener('onNetworkChange', async (event) => {
+      switch (event.imparterTag) {
         case 'ohledger':
-          var uri = details.uri;
+          var uri = event.uri;
           if (uri != (await getAdmin()).remunerationApiUrl__dollars) {
             this.setState({ dollarsEnabled: false }); // wrong testnet
             this.props.setError(`overhide-ledger (test) misconfig: backend:${(await getAdmin()).remunerationApiUrl__dollars} wallet:${uri}`);
@@ -74,16 +74,16 @@ class CarPanelTopUp extends React.Component {
           this.setState({ dollarsEnabled: true });
           break;
       }
-    };
+    });
 
     /**
      * Update current payer
      */
-    oh$.onCredentialsUpdate = async (imparterTag, creds) => {
+    oh$.addEventListener('onCredentialsUpdate',  async (event) => {
       let payerAddress = {};
-      payerAddress[imparterTag] = creds.address;
+      payerAddress[event.imparterTag] = event.address;
       this.setState({payerAddress: {...payerAddress, ...this.state.payerAddress}});
-    }
+    });
 
     oh$.setNetwork('ohledger', { currency: 'USD', mode: 'test' }); // dollars in test mode
   }
